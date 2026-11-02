@@ -1,11 +1,13 @@
-const CACHE_NAME = 'meowmindlog-v1';
+const CACHE_NAME = 'meowmindlog-v2';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
   './index.css',
   './app.js',
   './manifest.json',
-  './icons/icon.svg'
+  './icons/icon.svg',
+  './icons/icon-192.png',
+  './icons/icon-512.png'
 ];
 
 // Install: Cache core application assets
@@ -34,7 +36,6 @@ self.addEventListener('activate', (event) => {
 
 // Fetch: Cache-first with network fallback for offline reliability
 self.addEventListener('fetch', (event) => {
-  // Only handle GET requests
   if (event.request.method !== 'GET') return;
 
   event.respondWith(
@@ -52,7 +53,6 @@ self.addEventListener('fetch', (event) => {
         });
         return networkResponse;
       }).catch(() => {
-        // Fallback for offline navigation
         if (event.request.mode === 'navigate') {
           return caches.match('./index.html');
         }

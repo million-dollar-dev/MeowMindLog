@@ -909,15 +909,37 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // Install PWA
   const installBtn = document.getElementById('install-pwa-btn');
+  const installModal = document.getElementById('install-modal');
+  const closeInstallBtn = document.getElementById('close-install-modal-btn');
+  const confirmInstallBtn = document.getElementById('confirm-install-modal-btn');
+
+  function openInstallModal() {
+    if (installModal) installModal.classList.add('active');
+  }
+
+  function closeInstallModal() {
+    if (installModal) installModal.classList.remove('active');
+  }
+
+  if (closeInstallBtn) closeInstallBtn.addEventListener('click', closeInstallModal);
+  if (confirmInstallBtn) confirmInstallBtn.addEventListener('click', closeInstallModal);
+  if (installModal) {
+    installModal.addEventListener('click', (e) => {
+      if (e.target.id === 'install-modal') closeInstallModal();
+    });
+  }
+
   if (installBtn) {
     installBtn.addEventListener('click', async () => {
       if (deferredPrompt) {
         deferredPrompt.prompt();
         const { outcome } = await deferredPrompt.userChoice;
         if (outcome === 'accepted') {
-          installBtn.style.display = 'none';
+          showToast('Đang cài đặt ứng dụng...');
         }
         deferredPrompt = null;
+      } else {
+        openInstallModal();
       }
     });
   }

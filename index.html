@@ -28,7 +28,7 @@
         </div>
       </a>
       <div class="header-actions">
-        <button class="icon-btn" id="install-pwa-btn" title="Cài đặt ứng dụng" style="display: none;" aria-label="Cài đặt ứng dụng">
+        <button class="icon-btn" id="install-pwa-btn" title="Cài đặt ứng dụng" aria-label="Cài đặt ứng dụng">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
         </button>
         <button class="icon-btn" id="theme-toggle-btn" title="Đổi giao diện Sáng / Tối" aria-label="Đổi giao diện">
@@ -329,6 +329,38 @@
           <button type="submit" class="btn-primary">Lưu công việc</button>
         </div>
       </form>
+    </div>
+  </div>
+
+  <!-- Modal: Install Instructions Guide -->
+  <div class="modal-overlay" id="install-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Cài đặt MeowMindLog thành App</h3>
+        <button class="close-btn" id="close-install-modal-btn" aria-label="Đóng">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+      </div>
+      <div class="install-instructions">
+        <div class="install-step">
+          <h4>📱 Trình duyệt Samsung Internet:</h4>
+          <ol>
+            <li>Bấm vào biểu tượng <strong>Menu (3 gạch ngang ≡)</strong> ở góc dưới bên phải màn hình.</li>
+            <li>Chọn <strong>"Thêm trang vào" (Add page to)</strong>.</li>
+            <li>Chọn <strong>"Màn hình chờ" (Màn hình chính / Home screen)</strong>.</li>
+          </ol>
+        </div>
+        <div class="install-step" style="margin-top: 14px;">
+          <h4>🌐 Trình duyệt Google Chrome:</h4>
+          <ol>
+            <li>Bấm vào biểu tượng <strong>Menu (3 chấm ⋮)</strong> ở góc trên bên phải.</li>
+            <li>Chọn <strong>"Cài đặt ứng dụng"</strong> hoặc <strong>"Thêm vào Màn hình chính"</strong>.</li>
+          </ol>
+        </div>
+      </div>
+      <div class="modal-footer" style="margin-top: 18px;">
+        <button type="button" class="btn-primary" id="confirm-install-modal-btn">Đã hiểu</button>
+      </div>
     </div>
   </div>
 
