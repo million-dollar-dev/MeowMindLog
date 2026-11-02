@@ -19,5 +19,9 @@
       "task-progress",
       "context-used"
     ]
+  },
+  "trust": {
+    "schemaVersion": 1,
+    "reviewed": true
   }
 }

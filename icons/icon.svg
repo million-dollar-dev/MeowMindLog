@@ -1,0 +1,130 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <!-- Background Gradient (Soft warm cozy cream) -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fdf8f4"/>
+      <stop offset="100%" stop-color="#f5ede4"/>
+    </linearGradient>
+
+    <!-- Grey Tabby Fur Gradient (Mèo ta xám bạc) -->
+    <linearGradient id="tabbyGrey" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#94a3b8"/>
+      <stop offset="100%" stop-color="#64748b"/>
+    </linearGradient>
+
+    <!-- Deep Grey/Black for Stripes (Vằn đen) -->
+    <linearGradient id="stripeDark" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#334155"/>
+      <stop offset="100%" stop-color="#1e293b"/>
+    </linearGradient>
+
+    <!-- Emerald Eyes Gradient -->
+    <linearGradient id="eyeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#34d399"/>
+      <stop offset="100%" stop-color="#059669"/>
+    </linearGradient>
+
+    <!-- Green Activity Paw Badge -->
+    <linearGradient id="pawGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#10b981"/>
+      <stop offset="100%" stop-color="#047857"/>
+    </linearGradient>
+
+    <!-- Shadow filter -->
+    <filter id="softShadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="10" stdDeviation="14" flood-color="#1e293b" flood-opacity="0.12"/>
+    </filter>
+  </defs>
+
+  <!-- Background Card -->
+  <rect x="32" y="32" width="448" height="448" rx="112" fill="url(#bgGrad)" filter="url(#softShadow)"/>
+
+  <!-- === CAT EARS (Tai Mèo) === -->
+  <!-- Left Ear (Outer Grey) -->
+  <polygon points="120,210 152,78 240,165" fill="url(#tabbyGrey)"/>
+  <!-- Left Ear Stripes -->
+  <path d="M 148 100 L 165 145 M 140 135 L 158 165" stroke="url(#stripeDark)" stroke-width="8" stroke-linecap="round"/>
+  <!-- Left Ear Inner Pink -->
+  <polygon points="148,190 166,108 222,165" fill="#fbcfe8"/>
+
+  <!-- Right Ear (Outer Grey) -->
+  <polygon points="392,210 360,78 272,165" fill="url(#tabbyGrey)"/>
+  <!-- Right Ear Stripes -->
+  <path d="M 364 100 L 347 145 M 372 135 L 354 165" stroke="url(#stripeDark)" stroke-width="8" stroke-linecap="round"/>
+  <!-- Right Ear Inner Pink -->
+  <polygon points="364,190 346,108 290,165" fill="#fbcfe8"/>
+
+  <!-- === CAT HEAD BASE (Đầu Mèo Xám) === -->
+  <ellipse cx="256" cy="275" rx="146" ry="136" fill="url(#tabbyGrey)"/>
+
+  <!-- === TABBY STRIPES (VẰN ĐEN ĐẶC TRƯNG CỦA MÈO MƯỚP) === -->
+  <!-- Center Forehead Tabby "M" mark -->
+  <path d="M 230 165 L 244 195 L 256 175 L 268 195 L 282 165" stroke="url(#stripeDark)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <path d="M 256 195 L 256 220" stroke="url(#stripeDark)" stroke-width="7" stroke-linecap="round"/>
+  <path d="M 240 215 L 246 226" stroke="url(#stripeDark)" stroke-width="6" stroke-linecap="round"/>
+  <path d="M 272 215 L 266 226" stroke="url(#stripeDark)" stroke-width="6" stroke-linecap="round"/>
+
+  <!-- Left Cheek Stripes (Vằn má trái) -->
+  <path d="M 125 240 Q 155 245 175 252" stroke="url(#stripeDark)" stroke-width="7" stroke-linecap="round" fill="none"/>
+  <path d="M 120 268 Q 150 270 170 274" stroke="url(#stripeDark)" stroke-width="7" stroke-linecap="round" fill="none"/>
+  <path d="M 126 296 Q 150 294 168 295" stroke="url(#stripeDark)" stroke-width="7" stroke-linecap="round" fill="none"/>
+
+  <!-- Right Cheek Stripes (Vằn má phải) -->
+  <path d="M 387 240 Q 357 245 337 252" stroke="url(#stripeDark)" stroke-width="7" stroke-linecap="round" fill="none"/>
+  <path d="M 392 268 Q 362 270 342 274" stroke="url(#stripeDark)" stroke-width="7" stroke-linecap="round" fill="none"/>
+  <path d="M 386 296 Q 362 294 344 295" stroke="url(#stripeDark)" stroke-width="7" stroke-linecap="round" fill="none"/>
+
+  <!-- === WHITE PATCHES (MẢNG LÔNG TRẮNG MÕM VÀ ỨC) === -->
+  <!-- White Chest / Yếm trắng -->
+  <path d="M 190 360 Q 256 395 322 360 Q 256 425 190 360 Z" fill="#ffffff"/>
+
+  <!-- White Muzzle / Mõm Trắng Tròn -->
+  <ellipse cx="230" cy="305" rx="34" ry="26" fill="#ffffff"/>
+  <ellipse cx="282" cy="305" rx="34" ry="26" fill="#ffffff"/>
+  <ellipse cx="256" cy="320" rx="30" ry="20" fill="#ffffff"/>
+
+  <!-- Rosy Cheeks (Má hồng đào tự nhiên) -->
+  <ellipse cx="178" cy="305" rx="20" ry="13" fill="#fda4af" opacity="0.55"/>
+  <ellipse cx="334" cy="305" rx="20" ry="13" fill="#fda4af" opacity="0.55"/>
+
+  <!-- === EYES (ĐÔI MẮT TO TRÒN XANH NGỌC LUNG LINH) === -->
+  <!-- Left Eye Outer -->
+  <ellipse cx="202" cy="246" rx="22" ry="25" fill="#ffffff"/>
+  <ellipse cx="202" cy="246" rx="18" ry="21" fill="url(#eyeGrad)"/>
+  <ellipse cx="202" cy="246" rx="10" ry="18" fill="#0f172a"/>
+  <!-- Highlights -->
+  <circle cx="196" cy="239" r="6" fill="#ffffff"/>
+  <circle cx="206" cy="252" r="2.5" fill="#ffffff"/>
+
+  <!-- Right Eye Outer -->
+  <ellipse cx="310" cy="246" rx="22" ry="25" fill="#ffffff"/>
+  <ellipse cx="310" cy="246" rx="18" ry="21" fill="url(#eyeGrad)"/>
+  <ellipse cx="310" cy="246" rx="10" ry="18" fill="#0f172a"/>
+  <!-- Highlights -->
+  <circle cx="304" cy="239" r="6" fill="#ffffff"/>
+  <circle cx="314" cy="252" r="2.5" fill="#ffffff"/>
+
+  <!-- === NOSE & MOUTH (MŨI HỒNG VÀ MIỆNG MÈO CHÚM CHÍM) === -->
+  <!-- Nose (Hồng phấn) -->
+  <polygon points="256,285 244,272 268,272" fill="#f472b6" rx="3"/>
+
+  <!-- Mouth line -->
+  <path d="M 243 290 Q 256 304 256 293 Q 256 304 269 290" stroke="#334155" stroke-width="5" stroke-linecap="round" fill="none"/>
+
+  <!-- Whiskers (Râu Trắng) -->
+  <line x1="125" y1="288" x2="195" y2="295" stroke="#ffffff" stroke-width="4.5" stroke-linecap="round"/>
+  <line x1="120" y1="310" x2="192" y2="307" stroke="#ffffff" stroke-width="4.5" stroke-linecap="round"/>
+  <line x1="130" y1="330" x2="198" y2="318" stroke="#ffffff" stroke-width="4.5" stroke-linecap="round"/>
+
+  <line x1="387" y1="288" x2="317" y2="295" stroke="#ffffff" stroke-width="4.5" stroke-linecap="round"/>
+  <line x1="392" y1="310" x2="320" y2="307" stroke="#ffffff" stroke-width="4.5" stroke-linecap="round"/>
+  <line x1="382" y1="330" x2="314" y2="318" stroke="#ffffff" stroke-width="4.5" stroke-linecap="round"/>
+
+  <!-- === GREEN ACTIVITY PAW BADGE (HUY HIỆU NĂNG SUẤT) === -->
+  <circle cx="372" cy="382" r="58" fill="url(#pawGrad)" filter="url(#softShadow)"/>
+  <!-- Paw Print Inside Badge -->
+  <ellipse cx="372" cy="394" rx="22" ry="17" fill="#ffffff"/>
+  <circle cx="348" cy="368" r="8" fill="#ffffff"/>
+  <circle cx="372" cy="358" r="8.5" fill="#ffffff"/>
+  <circle cx="396" cy="368" r="8" fill="#ffffff"/>
+</svg>

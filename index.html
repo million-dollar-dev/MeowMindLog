@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>MeowMindLog - Nhật Ký Cảm Xúc & Công Việc Hằng Ngày</title>
+  <meta name="description" content="Ứng dụng offline ghi chép nhật ký công việc hằng ngày kèm lưới nhiệt GitHub siêu nhẹ, an toàn và riêng tư.">
+  <meta name="theme-color" content="#e07a5f">
+  
+  <!-- PWA Meta -->
+  <link rel="manifest" href="./manifest.json">
+  <link rel="icon" type="image/svg+xml" href="./icons/icon.svg">
+  <link rel="apple-touch-icon" href="./icons/icon.svg">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  
+  <link rel="stylesheet" href="./index.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Header -->
+    <header class="app-header">
+      <a href="#" class="brand" id="brand-logo">
+        <img src="./icons/icon.svg" alt="MeowMindLog Logo" class="brand-icon">
+        <div class="brand-info">
+          <h1>MeowMindLog <span class="cat-tag">Offline</span></h1>
+          <p>Nhật ký việc làm & cảm xúc</p>
+        </div>
+      </a>
+      <div class="header-actions">
+        <button class="icon-btn" id="install-pwa-btn" title="Cài đặt thành App" style="display: none;">📲</button>
+        <button class="icon-btn" id="theme-toggle-btn" title="Chuyển chế độ Sáng/Tối">🌙</button>
+      </div>
+    </header>
+
+    <!-- Navigation Tabs -->
+    <nav class="nav-tabs" role="tablist">
+      <button class="tab-btn active" data-tab="timeline-tab" id="tab-timeline-btn">📋 Hôm Nay</button>
+      <button class="tab-btn" data-tab="heatmap-tab" id="tab-heatmap-btn">🟩 Lưới Nhiệt (Năm)</button>
+      <button class="tab-btn" data-tab="charts-tab" id="tab-charts-btn">📊 Biểu Đồ</button>
+      <button class="tab-btn" data-tab="backup-tab" id="tab-backup-btn">💾 Sao Lưu</button>
+    </nav>
+
+    <!-- Tab 1: Timeline / Daily View -->
+    <main id="timeline-tab" class="tab-pane active">
+      <!-- Daily Summary Banner -->
+      <section class="daily-banner">
+        <div class="banner-header">
+          <div class="date-controls">
+            <button class="date-nav-btn" id="prev-day-btn" title="Ngày trước">◀</button>
+            <span class="date-display" id="current-date-text">Hôm nay</span>
+            <button class="date-nav-btn" id="next-day-btn" title="Ngày sau">▶</button>
+            <button class="date-nav-btn" id="today-btn" title="Về hôm nay">📅</button>
+          </div>
+          <span class="greeting-text" id="cat-greeting">Chào Sen! Hôm nay ta đã hoàn thành gì meow?</span>
+        </div>
+
+        <div class="progress-card">
+          <div class="progress-header">
+            <span>Tiến độ hoàn thành</span>
+            <span id="progress-percent-text">0/0 việc (0%)</span>
+          </div>
+          <div class="progress-bar-bg">
+            <div class="progress-bar-fill" id="progress-bar-fill"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Quick Add Task Button -->
+      <button class="quick-add-btn" id="open-add-task-modal-btn">
+        <span>🐾</span> Thêm Việc Đã Làm
+      </button>
+
+      <!-- Category Filter Chips -->
+      <div class="filter-row" id="category-filter-bar">
+        <button class="chip active" data-category="all">Tất cả</button>
+        <button class="chip" data-category="work">💼 Công việc</button>
+        <button class="chip" data-category="study">📚 Học tập</button>
+        <button class="chip" data-category="life">🏡 Đời sống</button>
+        <button class="chip" data-category="health">🏃 Sức khỏe</button>
+        <button class="chip" data-category="pet">🐱 Nuôi mèo</button>
+      </div>
+
+      <!-- Task Timeline List -->
+      <div class="task-list" id="task-list-container">
+        <!-- Tasks rendered dynamically by app.js -->
+      </div>
+    </main>
+
+    <!-- Tab 2: Yearly Activity Heatmap (GitHub Style) -->
+    <section id="heatmap-tab" class="tab-pane">
+      <div class="heatmap-card">
+        <div class="heatmap-header">
+          <h2><span>🐾</span> Lưới Nhiệt Hoạt Động <span id="heatmap-year-text">2026</span></h2>
+          <div class="heatmap-legend">
+            <span>Ít</span>
+            <div class="legend-box box-0"></div>
+            <div class="legend-box box-1"></div>
+            <div class="legend-box box-2"></div>
+            <div class="legend-box box-3"></div>
+            <div class="legend-box box-4"></div>
+            <span>Nhiều</span>
+          </div>
+        </div>
+
+        <!-- Scrollable 52-week Grid -->
+        <div class="heatmap-scroll-wrapper">
+          <div class="heatmap-matrix" id="heatmap-matrix-grid">
+            <!-- 52 columns x 7 rows cells rendered dynamically by app.js -->
+          </div>
+        </div>
+
+        <!-- Heatmap Stats -->
+        <div class="heatmap-stats-grid">
+          <div class="stat-item">
+            <div class="stat-value" id="current-streak-val">0</div>
+            <div class="stat-label">🔥 Chuỗi ngày liên tục</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value" id="longest-streak-val">0</div>
+            <div class="stat-label">🏆 Chuỗi dài nhất</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value" id="total-active-days-val">0</div>
+            <div class="stat-label">📅 Số ngày có việc làm</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value" id="total-tasks-year-val">0</div>
+            <div class="stat-label">📦 Tổng số việc trong năm</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tab 3: Analytics & Visual Charts -->
+    <section id="charts-tab" class="tab-pane">
+      <div class="analytics-container">
+        <!-- Quick KPI Cards -->
+        <div class="kpi-grid">
+          <div class="kpi-card">
+            <div class="kpi-icon">📦</div>
+            <div class="kpi-data">
+              <span class="kpi-val" id="kpi-total-tasks">0</span>
+              <span class="kpi-title">Tổng việc hoàn thành</span>
+            </div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-icon">🎯</div>
+            <div class="kpi-data">
+              <span class="kpi-val" id="kpi-completion-rate">0%</span>
+              <span class="kpi-title">Tỷ lệ hoàn thành</span>
+            </div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-icon">🌟</div>
+            <div class="kpi-data">
+              <span class="kpi-val" id="kpi-top-category">---</span>
+              <span class="kpi-title">Danh mục nhiều nhất</span>
+            </div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-icon">⚡</div>
+            <div class="kpi-data">
+              <span class="kpi-val" id="kpi-productive-day">---</span>
+              <span class="kpi-title">Ngày năng suất nhất</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Monthly Activity Chart (12 Months) -->
+        <div class="chart-card">
+          <div class="chart-card-header">
+            <h3><span>📅</span> Năng Suất 12 Tháng Trong Năm</h3>
+            <span class="chart-subtitle" id="monthly-chart-year">2026</span>
+          </div>
+          <div class="bar-chart-container" id="monthly-bar-chart">
+            <!-- 12 monthly bars rendered dynamically -->
+          </div>
+        </div>
+
+        <!-- Two Column Grid: Day of Week & Mood Breakdown -->
+        <div class="chart-two-col">
+          <!-- Day of Week Chart -->
+          <div class="chart-card">
+            <div class="chart-card-header">
+              <h3><span>📆</span> Năng Suất Theo Thứ</h3>
+            </div>
+            <div class="dow-chart-container" id="dow-bar-chart">
+              <!-- Mon - Sun bars rendered dynamically -->
+            </div>
+          </div>
+
+          <!-- Category Breakdown Chart -->
+          <div class="chart-card">
+            <div class="chart-card-header">
+              <h3><span>🏷️</span> Phân Loại Theo Danh Mục</h3>
+            </div>
+            <div class="category-breakdown-list" id="category-breakdown-container">
+              <!-- Category progress bars rendered dynamically -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Mood Distribution Card -->
+        <div class="chart-card">
+          <div class="chart-card-header">
+            <h3><span>😸</span> Cảm Xúc & Tâm Trạng Gắn Liền Với Việc Làm</h3>
+          </div>
+          <div class="mood-breakdown-row" id="mood-breakdown-container">
+            <!-- Mood items rendered dynamically -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tab 4: Backup & Data Settings -->
+    <section id="backup-tab" class="tab-pane">
+      <div class="backup-section">
+        <div class="backup-card">
+          <div class="backup-text">
+            <h3>Xuất Dữ Liệu Dự Phòng (JSON)</h3>
+            <p>Tải toàn bộ nhật ký và lịch sử công việc về máy dạng file JSON chuẩn để lưu giữ an toàn.</p>
+          </div>
+          <button class="btn-secondary" id="export-json-btn">📥 Tải File JSON</button>
+        </div>
+
+        <div class="backup-card">
+          <div class="backup-text">
+            <h3>Nhập Dữ Liệu Dự Phòng (JSON)</h3>
+            <p>Phục hồi dữ liệu từ file JSON bạn đã xuất trước đó khi đổi máy hoặc khôi phục nhật ký.</p>
+          </div>
+          <div>
+            <input type="file" id="import-json-file-input" accept=".json" style="display: none;">
+            <button class="btn-secondary" id="trigger-import-json-btn">📤 Chọn File JSON</button>
+          </div>
+        </div>
+
+        <div class="backup-card">
+          <div class="backup-text">
+            <h3>Xuất Báo Cáo Bảng Tính (CSV)</h3>
+            <p>Xuất file CSV để mở đọc và thống kê dễ dàng trên Excel, Google Sheets, hoặc Notion.</p>
+          </div>
+          <button class="btn-secondary" id="export-csv-btn">📊 Tải File CSV</button>
+        </div>
+
+        <div class="backup-card">
+          <div class="backup-text">
+            <h3 style="color: #ef4444;">Xóa Dữ Liệu Cục Bộ</h3>
+            <p>Xóa sạch toàn bộ nhật ký được lưu trên trình duyệt của thiết bị này.</p>
+          </div>
+          <button class="btn-danger" id="clear-all-data-btn">🗑️ Xóa Tất Cả</button>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- Modal: Add / Edit Task -->
+  <div class="modal-overlay" id="task-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="modal-title">🐾 Thêm Việc Đã Làm</h3>
+        <button class="close-btn" id="close-task-modal-btn">✕</button>
+      </div>
+      <form id="task-form">
+        <input type="hidden" id="task-edit-id">
+        <div class="form-group">
+          <label class="form-label" for="task-title-input">Tên công việc / hoạt động *</label>
+          <input type="text" class="form-input" id="task-title-input" placeholder="Ví dụ: Đọc xong 30 trang sách, Chạy bộ 3km..." required>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="task-category-select">Danh mục</label>
+          <select class="form-select" id="task-category-select">
+            <option value="work">💼 Công việc</option>
+            <option value="study">📚 Học tập</option>
+            <option value="life">🏡 Đời sống</option>
+            <option value="health">🏃 Sức khỏe</option>
+            <option value="pet">🐱 Nuôi mèo & Thú cưng</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="task-time-input">Thời gian hoàn thành</label>
+          <input type="time" class="form-input" id="task-time-input">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Tâm trạng khi hoàn thành</label>
+          <div class="mood-selector" id="mood-selector">
+            <button type="button" class="mood-btn selected" data-mood="happy" title="Rất vui">😸</button>
+            <button type="button" class="mood-btn" data-mood="proud" title="Tự hào">😺</button>
+            <button type="button" class="mood-btn" data-mood="peaceful" title="Bình yên">🐱</button>
+            <button type="button" class="mood-btn" data-mood="hardwork" title="Chăm chỉ">🐾</button>
+            <button type="button" class="mood-btn" data-mood="tired" title="Mệt nhưng xong">😿</button>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="task-notes-input">Ghi chú thêm (tùy chọn)</label>
+          <textarea class="form-textarea" id="task-notes-input" rows="3" placeholder="Chi tiết hoặc bài học rút ra..."></textarea>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn-secondary" id="cancel-task-btn">Hủy</button>
+          <button type="submit" class="quick-add-btn" style="margin-bottom: 0; width: auto; padding: 10px 20px;">Lưu Bản Ghi</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast Container -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <script src="./app.js"></script>
+</body>
+</html>
