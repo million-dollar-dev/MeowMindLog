@@ -44,6 +44,7 @@
       <button class="tab-btn" data-tab="heatmap-tab" id="tab-heatmap-btn">Xu hướng & Lưới nhiệt</button>
       <button class="tab-btn" data-tab="charts-tab" id="tab-charts-btn">Thống kê</button>
       <button class="tab-btn" data-tab="backup-tab" id="tab-backup-btn">Sao lưu</button>
+      <button class="tab-btn" data-tab="about-tab" id="tab-about-btn">Giới thiệu</button>
     </nav>
 
     <!-- Tab 1: Timeline / Daily View -->
@@ -153,13 +154,13 @@
             <p class="section-subtitle">Tổng hợp mức độ hoàn thành công việc năm <span id="heatmap-year-text">2026</span></p>
           </div>
           <div class="heatmap-legend">
-            <span>Ít</span>
-            <div class="legend-box box-0"></div>
-            <div class="legend-box box-1"></div>
-            <div class="legend-box box-2"></div>
-            <div class="legend-box box-3"></div>
-            <div class="legend-box box-4"></div>
-            <span>Nhiều</span>
+            <span>0 việc</span>
+            <div class="legend-box box-0" title="0 việc (Chưa có hoạt động)"></div>
+            <div class="legend-box box-1" title="1 việc (Mức 1)"></div>
+            <div class="legend-box box-2" title="2 việc (Mức 2)"></div>
+            <div class="legend-box box-3" title="3 - 4 việc (Mức 3)"></div>
+            <div class="legend-box box-4" title="5+ việc (Mức 4)"></div>
+            <span>5+ việc</span>
           </div>
         </div>
 
@@ -339,6 +340,135 @@
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
             <span>Xóa tất cả</span>
           </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tab 5: About MeowMindLog & AI-DLC Statement -->
+    <section id="about-tab" class="tab-pane">
+      <div class="about-container">
+        <!-- Hero Card -->
+        <div class="about-hero-card">
+          <div class="about-logo-badge">🐾</div>
+          <h1 class="about-app-title">MeowMindLog</h1>
+          <p class="about-app-tagline">
+            Ứng dụng nhật ký công việc & thói quen hằng ngày tối giản, offline-first PWA, bảo mật dữ liệu tuyệt đối và không phụ thuộc bất kỳ máy chủ bên ngoài nào.
+          </p>
+          <div class="about-badges-row">
+            <span class="badge-pill">Phiên bản 1.2.0</span>
+            <span class="badge-pill highlight">🤖 100% Phát Triển Bằng AI-DLC</span>
+            <span class="badge-pill">Offline PWA</span>
+            <span class="badge-pill">Lưu Trữ Cục Bộ IndexedDB</span>
+          </div>
+        </div>
+
+        <!-- AI-DLC Core Declaration Card -->
+        <div class="about-card aidlc-spotlight-card">
+          <div class="about-card-header">
+            <div class="spotlight-icon-wrap">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4"></path><path d="M12 18v4"></path><path d="M4.93 4.93l2.83 2.83"></path><path d="M16.24 16.24l2.83 2.83"></path><path d="M2 12h4"></path><path d="M18 12h4"></path><path d="M4.93 19.07l2.83-2.83"></path><path d="M16.24 7.76l2.83-2.83"></path></svg>
+            </div>
+            <div>
+              <h3>Tuyên ngôn phát triển: 100% AI-DLC</h3>
+              <p class="section-subtitle">AI-Driven Development Life Cycle Framework</p>
+            </div>
+          </div>
+          <div class="aidlc-desc-body">
+            <p>
+              Toàn bộ kiến trúc hệ thống, mã nguồn (HTML5, Vanilla CSS, Vanilla JavaScript), quy trình kiểm thử và tự động hóa CI/CD của <strong>MeowMindLog</strong> được thực hiện <strong>hoàn toàn bằng AI-DLC</strong> — phương pháp luận phát triển phần mềm có cấu trúc, kiểm soát chất lượng qua từng bước và lưu trữ toàn bộ lịch sử thiết kế.
+            </p>
+            <div class="aidlc-phases-grid">
+              <div class="aidlc-phase-box">
+                <span class="phase-step">Giai đoạn 1</span>
+                <h4>Ideation (Ý tưởng)</h4>
+                <p>Khảo sát nhu cầu nhật ký tối giản, loại bỏ xao nhãng và cam kết bảo vệ dữ liệu riêng tư.</p>
+              </div>
+              <div class="aidlc-phase-box">
+                <span class="phase-step">Giai đoạn 2</span>
+                <h4>Inception (Kiến trúc)</h4>
+                <p>Thiết kế kiến trúc lưu trữ kép IndexedDB + LocalStorage, chuẩn PWA và luồng dữ liệu độc lập.</p>
+              </div>
+              <div class="aidlc-phase-box">
+                <span class="phase-step">Giai đoạn 3</span>
+                <h4>Construction (Xây dựng)</h4>
+                <p>Triển khai giao diện Mobile-First, biểu đồ đường Bezier mượt mà, ma trận nhiệt 52 tuần và kiểm thử tự động.</p>
+              </div>
+              <div class="aidlc-phase-box">
+                <span class="phase-step">Giai đoạn 4</span>
+                <h4>Operation (Vận hành)</h4>
+                <p>Tự động hóa CI/CD qua GitHub Actions, xuất bản GitHub Pages tức thì và giám sát vận hành.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- App Features Highlights -->
+        <div class="about-card">
+          <div class="about-card-header">
+            <div>
+              <h3>Tính năng cốt lõi</h3>
+              <p class="section-subtitle">Thiết kế tinh gọn vì trải nghiệm người dùng</p>
+            </div>
+          </div>
+          <div class="about-features-grid">
+            <div class="feature-item">
+              <div class="feature-icon">📅</div>
+              <div>
+                <h4>Dòng thời gian trực quan</h4>
+                <p>Ghi chú công việc theo mốc thời gian, gắn nhãn danh mục màu sắc và ghi lại trạng thái tâm trạng.</p>
+              </div>
+            </div>
+            <div class="feature-item">
+              <div class="feature-icon">📈</div>
+              <div>
+                <h4>Biểu đồ xu hướng hàng ngày</h4>
+                <p>Đường cong Bezier tương tác thể hiện tần suất dao động tăng giảm trong 7, 14 và 30 ngày qua.</p>
+              </div>
+            </div>
+            <div class="feature-item">
+              <div class="feature-icon">🟩</div>
+              <div>
+                <h4>Lưới nhiệt 52 tuần</h4>
+                <p>Ma trận đóng góp chuẩn phong cách GitHub, có nhãn tháng và thứ rõ ràng, tính streak liên tục.</p>
+              </div>
+            </div>
+            <div class="feature-item">
+              <div class="feature-icon">🔒</div>
+              <div>
+                <h4>Bảo mật 100% Offline</h4>
+                <p>Dữ liệu lưu an toàn trên máy bạn qua IndexedDB, không gửi bất kỳ byte dữ liệu nào ra bên ngoài.</p>
+              </div>
+            </div>
+            <div class="feature-item">
+              <div class="feature-icon">⚡</div>
+              <div>
+                <h4>Cài đặt PWA tức thì</h4>
+                <p>Cài đặt trực tiếp lên điện thoại hoặc máy tính, hoạt động trơn tru không cần kết nối mạng.</p>
+              </div>
+            </div>
+            <div class="feature-item">
+              <div class="feature-icon">💾</div>
+              <div>
+                <h4>Sao lưu JSON & CSV</h4>
+                <p>Dễ dàng xuất file dự phòng hoặc khôi phục dữ liệu bất cứ lúc nào một cách minh bạch.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Project Meta & Author -->
+        <div class="about-footer-card">
+          <div class="about-meta-row">
+            <div>
+              <strong>Nhà phát triển:</strong> million-dollar-dev
+            </div>
+            <div>
+              <strong>Mã nguồn:</strong> <a href="https://github.com/million-dollar-dev/MeowMindLog" target="_blank" rel="noopener">GitHub Repository ↗</a>
+            </div>
+            <div>
+              <strong>Bản quyền:</strong> Giấy phép mã nguồn mở MIT
+            </div>
+          </div>
         </div>
       </div>
     </section>
