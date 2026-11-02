@@ -24,3 +24,6 @@ aidlc/spaces/*/intents/*/runtime-graph.json
 aidlc/spaces/*/intents/*/.aidlc-*
 aidlc/diagnostics/
 # END AI-DLC:gitignore
+
+# Local documentation (not committed)
+AIDLC_GUIDE.md
