@@ -108,42 +108,42 @@ const StorageManager = {
 async function seedDefaultDataIfEmpty() {
   const existing = await StorageManager.getAllTasks();
   if (existing.length === 0) {
-    const today = getTodayDateStr();
+    const today = new Date();
+    const getDateStrMinusDays = (days) => {
+      const d = new Date(today);
+      d.setDate(today.getDate() - days);
+      return formatDateStr(d);
+    };
+
     const sampleTasks = [
-      {
-        id: 'sample-1',
-        title: 'Lập kế hoạch công việc trong ngày',
-        category: 'work',
-        time: '08:30',
-        date: today,
-        mood: 'happy',
-        notes: 'Xác định 3 ưu tiên quan trọng nhất cần hoàn thành.',
-        completed: true,
-        createdAt: Date.now() - 3600000 * 4
-      },
-      {
-        id: 'sample-2',
-        title: 'Chạy bộ và rèn luyện thể lực',
-        category: 'health',
-        time: '09:45',
-        date: today,
-        mood: 'proud',
-        notes: '3km khởi động ngày mới, uống đủ nước.',
-        completed: true,
-        createdAt: Date.now() - 3600000 * 2
-      },
-      {
-        id: 'sample-3',
-        title: 'Đọc tài liệu kỹ thuật & kiến trúc hệ thống',
-        category: 'study',
-        time: '14:00',
-        date: today,
-        mood: 'hardwork',
-        notes: 'Nghiên cứu nguyên lý offline-first và Service Worker caching.',
-        completed: true,
-        createdAt: Date.now() - 3600000
-      }
+      // 5 ngày trước (2 việc)
+      { id: 'sample-5-1', title: 'Khởi động tuần mới & kiểm tra email', category: 'work', time: '09:00', date: getDateStrMinusDays(5), mood: 'peaceful', notes: 'Lập danh sách đầu việc tuần.', completed: true, createdAt: Date.now() - 86400000 * 5 },
+      { id: 'sample-5-2', title: 'Đi dạo và chơi cùng thú cưng', category: 'pet', time: '17:30', date: getDateStrMinusDays(5), mood: 'happy', notes: 'Cho mèo ăn và chải lông.', completed: true, createdAt: Date.now() - 86400000 * 5 },
+
+      // 4 ngày trước (1 việc)
+      { id: 'sample-4-1', title: 'Đọc tài liệu lập trình giao diện PWA', category: 'study', time: '20:00', date: getDateStrMinusDays(4), mood: 'hardwork', notes: '', completed: true, createdAt: Date.now() - 86400000 * 4 },
+
+      // 3 ngày trước (4 việc - Ngày năng suất cao nhất)
+      { id: 'sample-3-1', title: 'Họp thống nhất kiến trúc hệ thống', category: 'work', time: '09:30', date: getDateStrMinusDays(3), mood: 'hardwork', notes: 'Đạt đồng thuận giải pháp kỹ thuật.', completed: true, createdAt: Date.now() - 86400000 * 3 },
+      { id: 'sample-3-2', title: 'Chạy bộ 4km rèn luyện sức bền', category: 'health', time: '06:30', date: getDateStrMinusDays(3), mood: 'proud', notes: '', completed: true, createdAt: Date.now() - 86400000 * 3 },
+      { id: 'sample-3-3', title: 'Hoàn thiện chức năng lưu trữ IndexedDB', category: 'work', time: '14:30', date: getDateStrMinusDays(3), mood: 'proud', notes: 'Kiểm thử offline hoạt động tốt.', completed: true, createdAt: Date.now() - 86400000 * 3 },
+      { id: 'sample-3-4', title: 'Tưới cây và chăm sóc ban công', category: 'life', time: '18:00', date: getDateStrMinusDays(3), mood: 'peaceful', notes: '', completed: true, createdAt: Date.now() - 86400000 * 3 },
+
+      // 2 ngày trước (2 việc)
+      { id: 'sample-2-1', title: 'Xem lại tài liệu kiểm thử', category: 'study', time: '10:00', date: getDateStrMinusDays(2), mood: 'hardwork', notes: '', completed: true, createdAt: Date.now() - 86400000 * 2 },
+      { id: 'sample-2-2', title: 'Dọn dẹp góc làm việc', category: 'life', time: '21:00', date: getDateStrMinusDays(2), mood: 'peaceful', notes: '', completed: true, createdAt: Date.now() - 86400000 * 2 },
+
+      // Hôm qua (3 việc)
+      { id: 'sample-1-1', title: 'Thiết kế biểu đồ hoạt động', category: 'work', time: '10:30', date: getDateStrMinusDays(1), mood: 'hardwork', notes: '', completed: true, createdAt: Date.now() - 86400000 * 1 },
+      { id: 'sample-1-2', title: 'Tập yoga 30 phút buổi chiều', category: 'health', time: '16:00', date: getDateStrMinusDays(1), mood: 'peaceful', notes: '', completed: true, createdAt: Date.now() - 86400000 * 1 },
+      { id: 'sample-1-3', title: 'Gặp gỡ bạn bè cà phê cuối tuần', category: 'life', time: '19:30', date: getDateStrMinusDays(1), mood: 'happy', notes: '', completed: true, createdAt: Date.now() - 86400000 * 1 },
+
+      // Hôm nay (3 việc)
+      { id: 'sample-0-1', title: 'Lập kế hoạch công việc trong ngày', category: 'work', time: '08:30', date: getDateStrMinusDays(0), mood: 'happy', notes: 'Xác định 3 ưu tiên quan trọng nhất cần hoàn thành.', completed: true, createdAt: Date.now() - 3600000 * 4 },
+      { id: 'sample-0-2', title: 'Chạy bộ và rèn luyện thể lực', category: 'health', time: '09:45', date: getDateStrMinusDays(0), mood: 'proud', notes: '3km khởi động ngày mới, uống đủ nước.', completed: true, createdAt: Date.now() - 3600000 * 2 },
+      { id: 'sample-0-3', title: 'Đọc tài liệu kỹ thuật & Service Worker', category: 'study', time: '14:00', date: getDateStrMinusDays(0), mood: 'hardwork', notes: 'Nghiên cứu nguyên lý offline-first.', completed: true, createdAt: Date.now() - 3600000 }
     ];
+
     for (const t of sampleTasks) {
       await StorageManager.saveTask(t);
     }
@@ -178,10 +178,12 @@ const AppState = {
   currentTab: 'timeline-tab',
   allTasks: [],
   selectedMood: 'happy',
+  trendRange: 7,
 
   async refresh() {
     this.allTasks = await StorageManager.getAllTasks();
     renderTimeline();
+    renderDailyTrendChart();
     renderHeatmap();
     renderAnalytics();
   }
@@ -301,37 +303,338 @@ function renderTimeline() {
   }).join('');
 }
 
-// Render Heatmap Grid (GitHub Style 52 Weeks x 7 Days)
-function renderHeatmap() {
-  const matrix = document.getElementById('heatmap-matrix-grid');
-  const yearText = document.getElementById('heatmap-year-text');
-  
-  const now = new Date();
-  const currentYear = now.getFullYear();
-  yearText.textContent = String(currentYear);
+// === 4.1 Daily Trend Line Chart (Biểu đồ đường thể hiện lên xuống theo ngày) ===
+function renderDailyTrendChart() {
+  const container = document.getElementById('trend-line-chart-viewport');
+  if (!container) return;
+
+  const range = AppState.trendRange || 7;
+  const today = new Date();
+  const dateList = [];
+  for (let i = range - 1; i >= 0; i--) {
+    const d = new Date(today);
+    d.setDate(today.getDate() - i);
+    dateList.push(formatDateStr(d));
+  }
 
   // Map tasks by date: dateStr -> count
   const taskCountMap = {};
   AppState.allTasks.forEach((t) => {
-    if (t.completed !== false) {
+    if (t.completed !== false && t.date) {
       taskCountMap[t.date] = (taskCountMap[t.date] || 0) + 1;
     }
   });
 
-  // Calculate Streak
-  const { currentStreak, longestStreak, activeDays, totalYearTasks } = calculateStreaks(taskCountMap, currentYear);
-  document.getElementById('current-streak-val').textContent = currentStreak;
-  document.getElementById('longest-streak-val').textContent = longestStreak;
-  document.getElementById('total-active-days-val').textContent = activeDays;
-  document.getElementById('total-tasks-year-val').textContent = totalYearTasks;
+  const counts = dateList.map((d) => taskCountMap[d] || 0);
+  const totalCompleted = counts.reduce((sum, c) => sum + c, 0);
+  const avgPerDay = (totalCompleted / range).toFixed(1);
+  const peakVal = Math.max(...counts, 0);
+  const activeDays = counts.filter((c) => c > 0).length;
+  const activeRate = Math.round((activeDays / range) * 100);
 
-  // Generate 52 weeks (364/365 days) aligned to Monday
+  // Assess trend status
+  const half = Math.floor(range / 2);
+  const firstHalfSum = counts.slice(0, half).reduce((a, b) => a + b, 0);
+  const secondHalfSum = counts.slice(-half).reduce((a, b) => a + b, 0);
+  const diff = secondHalfSum - firstHalfSum;
+
+  const badgeElem = document.getElementById('trend-status-badge');
+  if (badgeElem) {
+    if (diff > 1) {
+      badgeElem.textContent = 'Tăng trưởng ↗';
+      badgeElem.className = 'trend-badge up';
+    } else if (diff < -1) {
+      badgeElem.textContent = 'Giảm nhẹ ↘';
+      badgeElem.className = 'trend-badge down';
+    } else {
+      badgeElem.textContent = 'Ổn định ➔';
+      badgeElem.className = 'trend-badge';
+    }
+  }
+
+  // Update Ribbon KPI Stats
+  const avgElem = document.getElementById('trend-avg-val');
+  const peakElem = document.getElementById('trend-peak-val');
+  const totalElem = document.getElementById('trend-total-val');
+  const rateElem = document.getElementById('trend-active-rate-val');
+  if (avgElem) avgElem.textContent = `${avgPerDay} việc`;
+  if (peakElem) peakElem.textContent = peakVal > 0 ? `${peakVal} việc` : '0 việc';
+  if (totalElem) totalElem.textContent = `${totalCompleted} việc`;
+  if (rateElem) rateElem.textContent = `${activeRate}%`;
+
+  // SVG Chart Geometry
+  const W = 760;
+  const H = 220;
+  const padLeft = 45;
+  const padRight = 30;
+  const padTop = 25;
+  const padBottom = 35;
+  const chartW = W - padLeft - padRight;
+  const chartH = H - padTop - padBottom;
+
+  const yMax = Math.max(peakVal + 1, 4);
+
+  // Compute point coordinates
+  const points = dateList.map((dateStr, i) => {
+    const count = counts[i];
+    const x = padLeft + (i / (range - 1)) * chartW;
+    const y = padTop + chartH - (count / yMax) * chartH;
+    return { x, y, dateStr, count, index: i };
+  });
+
+  // Smooth Bezier Curve Path generator
+  let linePath = `M ${points[0].x.toFixed(1)} ${points[0].y.toFixed(1)}`;
+  for (let i = 0; i < points.length - 1; i++) {
+    const p0 = points[Math.max(0, i - 1)];
+    const p1 = points[i];
+    const p2 = points[i + 1];
+    const p3 = points[Math.min(points.length - 1, i + 2)];
+
+    const cp1x = p1.x + (p2.x - p0.x) / 6;
+    let cp1y = p1.y + (p2.y - p0.y) / 6;
+    const cp2x = p2.x - (p3.x - p1.x) / 6;
+    let cp2y = p2.y - (p3.y - p1.y) / 6;
+
+    const bottomY = padTop + chartH;
+    if (cp1y > bottomY) cp1y = bottomY;
+    if (cp2y > bottomY) cp2y = bottomY;
+    if (cp1y < padTop) cp1y = padTop;
+    if (cp2y < padTop) cp2y = padTop;
+
+    linePath += ` C ${cp1x.toFixed(1)} ${cp1y.toFixed(1)}, ${cp2x.toFixed(1)} ${cp2y.toFixed(1)}, ${p2.x.toFixed(1)} ${p2.y.toFixed(1)}`;
+  }
+
+  // Area under curve
+  const areaPath = `${linePath} L ${points[points.length - 1].x.toFixed(1)} ${padTop + chartH} L ${points[0].x.toFixed(1)} ${padTop + chartH} Z`;
+
+  // Horizontal Grid Lines & Y-ticks
+  const yTicks = [0, Math.round(yMax / 3), Math.round((yMax * 2) / 3), yMax];
+  const uniqueTicks = Array.from(new Set(yTicks)).sort((a, b) => a - b);
+  const gridLinesHTML = uniqueTicks.map((val) => {
+    const gy = padTop + chartH - (val / yMax) * chartH;
+    return `
+      <line class="trend-grid-line" x1="${padLeft}" y1="${gy.toFixed(1)}" x2="${W - padRight}" y2="${gy.toFixed(1)}" />
+      <text class="trend-axis-text" x="${padLeft - 10}" y="${(gy + 4).toFixed(1)}" text-anchor="end">${val}</text>
+    `;
+  }).join('');
+
+  // X Axis Date Labels
+  const xLabelsHTML = points.map((p, i) => {
+    let show = false;
+    if (range === 7) show = true;
+    else if (range === 14) show = i % 2 === 0 || i === range - 1;
+    else if (range === 30) show = i % 5 === 0 || i === range - 1;
+
+    if (!show) return '';
+
+    const [y, m, d] = p.dateStr.split('-');
+    const dt = new Date(Number(y), Number(m) - 1, Number(d));
+    const isToday = p.dateStr === getTodayDateStr();
+    const dayNames = ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'];
+    const labelText = isToday ? 'Hôm nay' : `${dayNames[dt.getDay()]} ${d}/${m}`;
+
+    return `
+      <text class="trend-axis-text" x="${p.x.toFixed(1)}" y="${H - 12}" text-anchor="middle" font-weight="${isToday ? '700' : '500'}">
+        ${labelText}
+      </text>
+    `;
+  }).join('');
+
+  // Circular Data Dots
+  const dotsHTML = points.map((p) => {
+    return `
+      <circle 
+        class="trend-chart-dot" 
+        cx="${p.x.toFixed(1)}" 
+        cy="${p.y.toFixed(1)}" 
+        r="5" 
+        data-date="${p.dateStr}" 
+        data-count="${p.count}"
+        data-x="${p.x.toFixed(1)}"
+        data-y="${p.y.toFixed(1)}"
+      />
+    `;
+  }).join('');
+
+  container.innerHTML = `
+    <svg class="trend-svg" viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid meet" id="trend-svg-elem">
+      <defs>
+        <linearGradient id="trendGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stop-color="var(--accent-primary)" stop-opacity="0.32" />
+          <stop offset="85%" stop-color="var(--accent-primary)" stop-opacity="0.04" />
+          <stop offset="100%" stop-color="var(--accent-primary)" stop-opacity="0" />
+        </linearGradient>
+      </defs>
+
+      <!-- Grid lines & Y scale -->
+      ${gridLinesHTML}
+
+      <!-- Bottom X baseline -->
+      <line x1="${padLeft}" y1="${padTop + chartH}" x2="${W - padRight}" y2="${padTop + chartH}" stroke="var(--border-subtle)" stroke-width="1.2" />
+
+      <!-- Area gradient fill -->
+      <path d="${areaPath}" fill="url(#trendGradient)" />
+
+      <!-- Main smooth line curve -->
+      <path class="trend-curve-line" d="${linePath}" />
+
+      <!-- Vertical Guide Line -->
+      <line id="trend-vertical-guide" class="trend-guide-line" x1="0" y1="${padTop}" x2="0" y2="${padTop + chartH}" style="display: none;" />
+
+      <!-- Data Dots -->
+      ${dotsHTML}
+
+      <!-- X-axis Labels -->
+      ${xLabelsHTML}
+    </svg>
+  `;
+
+  attachLineChartInteractions(points, container);
+}
+
+// Attach hover and click interactions to Line Chart
+function attachLineChartInteractions(points, container) {
+  const tooltip = document.getElementById('trend-chart-tooltip');
+  const svg = document.getElementById('trend-svg-elem');
+  const guide = document.getElementById('trend-vertical-guide');
+  if (!svg || !tooltip) return;
+
+  const showPointTooltip = (p) => {
+    const isToday = p.dateStr === getTodayDateStr();
+    const dateFormatted = formatReadableDate(p.dateStr);
+
+    let statusNote = 'Chưa có việc';
+    if (p.count >= 4) statusNote = '⭐ Rất tích cực!';
+    else if (p.count >= 2) statusNote = '✓ Đạt năng suất';
+    else if (p.count === 1) statusNote = 'Khởi động';
+
+    tooltip.innerHTML = `
+      <div class="tt-date">${isToday ? '🌟 Hôm nay - ' : ''}${dateFormatted}</div>
+      <div class="tt-count">${p.count} việc hoàn thành <span style="font-size:0.75rem; font-weight:normal; color:var(--text-secondary); margin-left:4px;">(${statusNote})</span></div>
+      <div class="tt-hint">Bấm để mở dòng thời gian ngày này ➔</div>
+    `;
+    tooltip.style.display = 'block';
+
+    const rect = container.getBoundingClientRect();
+    const svgRect = svg.getBoundingClientRect();
+    const scaleX = svgRect.width / 760;
+    const scaleY = svgRect.height / 220;
+
+    const posX = p.x * scaleX + (svgRect.left - rect.left);
+    const posY = p.y * scaleY + (svgRect.top - rect.top);
+
+    tooltip.style.left = `${posX}px`;
+    tooltip.style.top = `${posY}px`;
+
+    if (guide) {
+      guide.setAttribute('x1', p.x);
+      guide.setAttribute('x2', p.x);
+      guide.style.display = 'block';
+    }
+  };
+
+  const hideTooltip = () => {
+    tooltip.style.display = 'none';
+    if (guide) guide.style.display = 'none';
+    svg.querySelectorAll('.trend-chart-dot').forEach((d) => d.classList.remove('active'));
+  };
+
+  svg.querySelectorAll('.trend-chart-dot').forEach((dot) => {
+    const dateStr = dot.dataset.date;
+    const p = points.find((pt) => pt.dateStr === dateStr);
+
+    dot.addEventListener('mouseenter', () => {
+      dot.classList.add('active');
+      if (p) showPointTooltip(p);
+    });
+
+    dot.addEventListener('click', () => {
+      if (p) onHeatmapCellClick(p.dateStr);
+    });
+  });
+
+  container.addEventListener('mouseleave', hideTooltip);
+
+  svg.addEventListener('mousemove', (e) => {
+    const svgRect = svg.getBoundingClientRect();
+    const mouseSvgX = ((e.clientX - svgRect.left) / svgRect.width) * 760;
+
+    let closest = points[0];
+    let minDiff = Infinity;
+    points.forEach((pt) => {
+      const diff = Math.abs(pt.x - mouseSvgX);
+      if (diff < minDiff) {
+        minDiff = diff;
+        closest = pt;
+      }
+    });
+
+    if (closest && minDiff < 45) {
+      svg.querySelectorAll('.trend-chart-dot').forEach((d) => {
+        d.classList.toggle('active', d.dataset.date === closest.dateStr);
+      });
+      showPointTooltip(closest);
+    }
+  });
+}
+
+// === 4.2 Render Heatmap Grid (GitHub Style 52 Weeks x 7 Days) ===
+function renderHeatmap() {
+  const matrix = document.getElementById('heatmap-matrix-grid');
+  const yearText = document.getElementById('heatmap-year-text');
+  const monthsHeader = document.getElementById('heatmap-months-header');
+  if (!matrix) return;
+  
+  const now = new Date();
+  const currentYear = now.getFullYear();
+  if (yearText) yearText.textContent = String(currentYear);
+
+  // Map tasks by date: dateStr -> count
+  const taskCountMap = {};
+  AppState.allTasks.forEach((t) => {
+    if (t.completed !== false && t.date) {
+      taskCountMap[t.date] = (taskCountMap[t.date] || 0) + 1;
+    }
+  });
+
+  // Calculate Streaks & KPIs
+  const { currentStreak, longestStreak, activeDays, totalYearTasks } = calculateStreaks(taskCountMap, currentYear);
+  const curStreakElem = document.getElementById('current-streak-val');
+  const longStreakElem = document.getElementById('longest-streak-val');
+  const activeDaysElem = document.getElementById('total-active-days-val');
+  const totalTasksElem = document.getElementById('total-tasks-year-val');
+  if (curStreakElem) curStreakElem.textContent = currentStreak;
+  if (longStreakElem) longStreakElem.textContent = longestStreak;
+  if (activeDaysElem) activeDaysElem.textContent = activeDays;
+  if (totalTasksElem) totalTasksElem.textContent = totalYearTasks;
+
+  // Generate 53 weeks aligned to Monday
   const startDate = new Date(currentYear, 0, 1);
   const dayOfWeek = startDate.getDay();
   const diffToMonday = (dayOfWeek + 6) % 7;
   startDate.setDate(startDate.getDate() - diffToMonday);
 
+  // Render Month Labels across 53 weeks
+  if (monthsHeader) {
+    const monthNames = ['Thg 1', 'Thg 2', 'Thg 3', 'Thg 4', 'Thg 5', 'Thg 6', 'Thg 7', 'Thg 8', 'Thg 9', 'Thg 10', 'Thg 11', 'Thg 12'];
+    let lastMonth = -1;
+    const monthLabels = [];
+
+    for (let w = 0; w < 53; w++) {
+      const weekDate = new Date(startDate);
+      weekDate.setDate(startDate.getDate() + w * 7);
+      const m = weekDate.getMonth();
+      if (m !== lastMonth && weekDate.getFullYear() === currentYear) {
+        lastMonth = m;
+        const leftPx = w * 15;
+        monthLabels.push(`<span class="heatmap-month-label" style="left: ${leftPx}px;">${monthNames[m]}</span>`);
+      }
+    }
+    monthsHeader.innerHTML = monthLabels.join('');
+  }
+
   const totalDays = 53 * 7;
+  const todayStr = getTodayDateStr();
   const cellsHTML = [];
 
   for (let i = 0; i < totalDays; i++) {
@@ -339,6 +642,7 @@ function renderHeatmap() {
     cur.setDate(startDate.getDate() + i);
     const dateStr = formatDateStr(cur);
     const count = taskCountMap[dateStr] || 0;
+    const isToday = dateStr === todayStr;
     
     let level = 0;
     if (count >= 5) level = 4;
@@ -348,16 +652,27 @@ function renderHeatmap() {
 
     cellsHTML.push(`
       <div 
-        class="heatmap-cell box-${level}" 
+        class="heatmap-cell box-${level} ${isToday ? 'is-today' : ''}" 
         data-date="${dateStr}" 
         data-count="${count}"
-        title="${dateStr}: ${count} việc hoàn thành"
+        title="${isToday ? '★ Hôm nay - ' : ''}${formatReadableDate(dateStr)}: ${count} việc hoàn thành"
         onclick="onHeatmapCellClick('${dateStr}')"
       ></div>
     `);
   }
 
   matrix.innerHTML = cellsHTML.join('');
+}
+
+// Auto-scroll heatmap to current week
+function scrollHeatmapToToday() {
+  const scrollWrapper = document.getElementById('heatmap-scroll-container');
+  const todayCell = document.querySelector('.heatmap-cell.is-today');
+  if (scrollWrapper && todayCell) {
+    const cellLeft = todayCell.offsetLeft || 0;
+    const targetScroll = Math.max(0, cellLeft - (scrollWrapper.clientWidth / 2) + 20);
+    scrollWrapper.scrollTo({ left: targetScroll, behavior: 'smooth' });
+  }
 }
 
 // Calculate Current Streak & Longest Streak
@@ -412,7 +727,7 @@ function calculateStreaks(taskCountMap, year) {
   return { currentStreak, longestStreak, activeDays, totalYearTasks };
 }
 
-// Cell Click on Heatmap: Jump to that day's timeline
+// Cell Click on Heatmap / Chart Dot: Jump to that day's timeline
 window.onHeatmapCellClick = function(dateStr) {
   AppState.selectedDate = dateStr;
   switchTab('timeline-tab');
@@ -753,6 +1068,10 @@ function switchTab(tabId) {
   document.querySelectorAll('.tab-pane').forEach((pane) => {
     pane.classList.toggle('active', pane.id === tabId);
   });
+  if (tabId === 'heatmap-tab') {
+    renderDailyTrendChart();
+    setTimeout(scrollHeatmapToToday, 80);
+  }
 }
 
 // === 10. Theme Manager ===
@@ -808,6 +1127,16 @@ document.addEventListener('DOMContentLoaded', async () => {
   document.querySelectorAll('.tab-btn').forEach((btn) => {
     btn.addEventListener('click', () => {
       switchTab(btn.dataset.tab);
+    });
+  });
+
+  // Trend Range Selector Buttons
+  document.querySelectorAll('#trend-range-buttons .range-btn').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('#trend-range-buttons .range-btn').forEach((b) => b.classList.remove('active'));
+      btn.classList.add('active');
+      AppState.trendRange = parseInt(btn.dataset.range, 10) || 7;
+      renderDailyTrendChart();
     });
   });
 

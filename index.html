@@ -41,7 +41,7 @@
     <!-- Navigation Tabs -->
     <nav class="nav-tabs" role="tablist">
       <button class="tab-btn active" data-tab="timeline-tab" id="tab-timeline-btn">Hôm nay</button>
-      <button class="tab-btn" data-tab="heatmap-tab" id="tab-heatmap-btn">Lưới nhiệt</button>
+      <button class="tab-btn" data-tab="heatmap-tab" id="tab-heatmap-btn">Xu hướng & Lưới nhiệt</button>
       <button class="tab-btn" data-tab="charts-tab" id="tab-charts-btn">Thống kê</button>
       <button class="tab-btn" data-tab="backup-tab" id="tab-backup-btn">Sao lưu</button>
     </nav>
@@ -97,12 +97,59 @@
       </div>
     </main>
 
-    <!-- Tab 2: Yearly Activity Heatmap (GitHub Style) -->
+    <!-- Tab 2: Activity Trend Line Chart & Yearly Heatmap -->
     <section id="heatmap-tab" class="tab-pane">
+      <!-- 1. Daily Trend Line Chart (Biểu đồ đường thể hiện lên xuống theo ngày) -->
+      <div class="trend-chart-card">
+        <div class="trend-chart-header">
+          <div>
+            <div class="trend-title-row">
+              <h2>Biểu đồ xu hướng hàng ngày</h2>
+              <span class="trend-badge" id="trend-status-badge">Đang tải...</span>
+            </div>
+            <p class="section-subtitle">Tần suất công việc hoàn thành dao động lên xuống theo từng ngày</p>
+          </div>
+          <div class="trend-range-selector" id="trend-range-buttons">
+            <button class="range-btn active" data-range="7">7 ngày qua</button>
+            <button class="range-btn" data-range="14">14 ngày qua</button>
+            <button class="range-btn" data-range="30">30 ngày qua</button>
+          </div>
+        </div>
+
+        <!-- Quick Stats Ribbon for the selected period -->
+        <div class="trend-stats-ribbon">
+          <div class="trend-stat-chip">
+            <span class="trend-stat-label">Trung bình/ngày</span>
+            <span class="trend-stat-val" id="trend-avg-val">0.0</span>
+          </div>
+          <div class="trend-stat-chip">
+            <span class="trend-stat-label">Đỉnh điểm (Peak)</span>
+            <span class="trend-stat-val" id="trend-peak-val">0</span>
+          </div>
+          <div class="trend-stat-chip">
+            <span class="trend-stat-label">Tổng hoàn thành</span>
+            <span class="trend-stat-val" id="trend-total-val">0</span>
+          </div>
+          <div class="trend-stat-chip">
+            <span class="trend-stat-label">Tỷ lệ ngày tích cực</span>
+            <span class="trend-stat-val" id="trend-active-rate-val">0%</span>
+          </div>
+        </div>
+
+        <!-- Interactive SVG Line Chart Viewport -->
+        <div class="line-chart-viewport" id="trend-line-chart-viewport">
+          <!-- Rendered dynamically by app.js -->
+        </div>
+
+        <!-- Floating Tooltip for Line Chart -->
+        <div class="chart-tooltip-floating" id="trend-chart-tooltip" style="display: none;"></div>
+      </div>
+
+      <!-- 2. Yearly Activity Heatmap (GitHub Style) -->
       <div class="heatmap-card">
         <div class="heatmap-header">
           <div>
-            <h2>Lưới nhiệt hoạt động</h2>
+            <h2>Lưới nhiệt hoạt động 52 tuần</h2>
             <p class="section-subtitle">Tổng hợp mức độ hoàn thành công việc năm <span id="heatmap-year-text">2026</span></p>
           </div>
           <div class="heatmap-legend">
@@ -116,10 +163,26 @@
           </div>
         </div>
 
-        <!-- Scrollable 52-week Grid -->
-        <div class="heatmap-scroll-wrapper">
-          <div class="heatmap-matrix" id="heatmap-matrix-grid">
-            <!-- Rendered dynamically by app.js -->
+        <!-- Scrollable 52-week Grid with sticky days and months -->
+        <div class="heatmap-scroll-wrapper" id="heatmap-scroll-container">
+          <div class="heatmap-container-inner">
+            <div class="heatmap-months-header" id="heatmap-months-header">
+              <!-- Rendered dynamically by app.js -->
+            </div>
+            <div class="heatmap-body-row">
+              <div class="heatmap-days-column" aria-hidden="true">
+                <span>T2</span>
+                <span></span>
+                <span>T4</span>
+                <span></span>
+                <span>T6</span>
+                <span></span>
+                <span>CN</span>
+              </div>
+              <div class="heatmap-matrix" id="heatmap-matrix-grid">
+                <!-- Rendered dynamically by app.js -->
+              </div>
+            </div>
           </div>
         </div>
 
