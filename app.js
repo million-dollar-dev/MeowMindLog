@@ -1,5 +1,6 @@
 /**
  * MeowMindLog - Core Application Engine (Offline PWA)
+ * Clean, Human-Crafted, Distraction-Free Daily Tracker
  */
 
 // === 1. Storage Manager (IndexedDB with LocalStorage Fallback) ===
@@ -111,34 +112,34 @@ async function seedDefaultDataIfEmpty() {
     const sampleTasks = [
       {
         id: 'sample-1',
-        title: 'Khởi động ngày mới cùng MeowMindLog',
-        category: 'life',
-        time: '08:00',
+        title: 'Lập kế hoạch công việc trong ngày',
+        category: 'work',
+        time: '08:30',
         date: today,
         mood: 'happy',
-        notes: 'Bắt đầu thói quen ghi lại các việc đã làm để theo dõi năng suất!',
+        notes: 'Xác định 3 ưu tiên quan trọng nhất cần hoàn thành.',
         completed: true,
         createdAt: Date.now() - 3600000 * 4
       },
       {
         id: 'sample-2',
-        title: 'Hoàn thành buổi tập thể dục buổi sáng',
+        title: 'Chạy bộ và rèn luyện thể lực',
         category: 'health',
-        time: '09:30',
+        time: '09:45',
         date: today,
         mood: 'proud',
-        notes: 'Chạy bộ 2km và uống đủ 500ml nước',
+        notes: '3km khởi động ngày mới, uống đủ nước.',
         completed: true,
         createdAt: Date.now() - 3600000 * 2
       },
       {
         id: 'sample-3',
-        title: 'Học và tìm hiểu ứng dụng PWA Offline',
+        title: 'Đọc tài liệu kỹ thuật & kiến trúc hệ thống',
         category: 'study',
-        time: '14:15',
+        time: '14:00',
         date: today,
         mood: 'hardwork',
-        notes: 'Web app offline siêu nhẹ, chạy mượt mà không cần cài Android Studio',
+        notes: 'Nghiên cứu nguyên lý offline-first và Service Worker caching.',
         completed: true,
         createdAt: Date.now() - 3600000
       }
@@ -165,7 +166,7 @@ function getTodayDateStr() {
 function formatReadableDate(dateStr) {
   const [y, m, d] = dateStr.split('-');
   const date = new Date(Number(y), Number(m) - 1, Number(d));
-  const days = ['Chủ nhật', 'Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6', 'Thứ 7'];
+  const days = ['Chủ nhật', 'Thứ Hai', 'Thứ Ba', 'Thứ Tư', 'Thứ Năm', 'Thứ Sáu', 'Thứ Bảy'];
   const dayName = days[date.getDay()];
   return `${dayName}, ${d}/${m}/${y}`;
 }
@@ -186,21 +187,22 @@ const AppState = {
   }
 };
 
-// Category Badge Labels & Classes
+// Category Map without emoji slop
 const CATEGORY_MAP = {
-  work: { label: 'Công việc', class: 'badge-work', icon: '💼' },
-  study: { label: 'Học tập', class: 'badge-study', icon: '📚' },
-  life: { label: 'Đời sống', class: 'badge-life', icon: '🏡' },
-  health: { label: 'Sức khỏe', class: 'badge-health', icon: '🏃' },
-  pet: { label: 'Nuôi mèo', class: 'badge-pet', icon: '🐱' }
+  work: { label: 'Công việc', class: 'badge-work', dotClass: 'dot-work' },
+  study: { label: 'Học tập', class: 'badge-study', dotClass: 'dot-study' },
+  life: { label: 'Đời sống', class: 'badge-life', dotClass: 'dot-life' },
+  health: { label: 'Sức khỏe', class: 'badge-health', dotClass: 'dot-health' },
+  pet: { label: 'Thú cưng', class: 'badge-pet', dotClass: 'dot-pet' }
 };
 
-const MOOD_EMOJIS = {
-  happy: '😸',
-  proud: '😺',
-  peaceful: '🐱',
-  hardwork: '🐾',
-  tired: '😿'
+// Mood labels and subtle badges
+const MOOD_MAP = {
+  happy: { label: 'Tích cực' },
+  proud: { label: 'Tự hào' },
+  peaceful: { label: 'Bình yên' },
+  hardwork: { label: 'Tập trung' },
+  tired: { label: 'Mệt mỏi' }
 };
 
 // === 4. UI Rendering Functions ===
@@ -224,16 +226,16 @@ function renderTimeline() {
 
   // Calculate Progress
   const percent = totalInDay === 0 ? 0 : Math.round((completedInDay / totalInDay) * 100);
-  progressText.textContent = `${completedInDay}/${totalInDay} việc (${percent}%)`;
+  progressText.textContent = `${completedInDay}/${totalInDay} mục (${percent}%)`;
   progressFill.style.width = `${percent}%`;
 
-  // Dynamic Greeting based on progress
+  // Natural, clean encouragement without cheesy AI tone
   if (totalInDay === 0) {
-    greetingText.textContent = 'Chưa có nhật ký nào cho ngày này meow! Hãy thêm việc đầu tiên nhé.';
+    greetingText.textContent = 'Chưa có mục nào được ghi lại cho ngày này.';
   } else if (completedInDay === totalInDay) {
-    greetingText.textContent = 'Tuyệt vời lắm Sen ơi! Đã hoàn thành 100% mục tiêu hôm nay rồi 😸🎉';
+    greetingText.textContent = `Đã hoàn thành toàn bộ ${totalInDay} mục trong ngày. Tiếp tục duy trì phong độ!`;
   } else {
-    greetingText.textContent = `Sen đã xong ${completedInDay} việc rồi, cố gắng lên nào meow! 🐾`;
+    greetingText.textContent = `Đã hoàn thành ${completedInDay} trên ${totalInDay} mục. Còn ${totalInDay - completedInDay} việc cần làm.`;
   }
 
   // Filter by category
@@ -247,39 +249,52 @@ function renderTimeline() {
   if (dayTasks.length === 0) {
     container.innerHTML = `
       <div class="empty-state">
-        <div class="cat-mascot">🐱</div>
-        <h3>Không có bản ghi nào</h3>
-        <p>Bấm vào nút <strong>"Thêm Việc Đã Làm"</strong> ở trên để lưu lại công việc của bạn nhé!</p>
+        <div class="empty-icon-wrap">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+        </div>
+        <h3>Chưa có bản ghi nào</h3>
+        <p>Bấm vào nút <strong>"Thêm công việc"</strong> ở trên để ghi lại các việc bạn đã hoàn thành.</p>
       </div>
     `;
     return;
   }
 
   container.innerHTML = dayTasks.map((task) => {
-    const cat = CATEGORY_MAP[task.category] || { label: 'Khác', class: 'badge-life', icon: '📌' };
-    const moodEmoji = MOOD_EMOJIS[task.mood] || '😸';
+    const cat = CATEGORY_MAP[task.category] || { label: 'Khác', class: 'badge-life', dotClass: 'dot-life' };
+    const moodInfo = MOOD_MAP[task.mood] || { label: 'Tích cực' };
     const isCompleted = task.completed ? 'completed' : '';
-    const checkIcon = task.completed ? '✓' : '';
 
     return `
       <div class="task-card ${isCompleted}" data-id="${task.id}">
         <div class="task-main">
-          <button class="task-checkbox" onclick="toggleTaskCompletion('${task.id}')" title="Đánh dấu hoàn thành">${checkIcon}</button>
+          <button class="task-checkbox" onclick="toggleTaskCompletion('${task.id}')" title="Đánh dấu hoàn thành" aria-label="Đánh dấu hoàn thành">
+            ${task.completed ? `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>` : ''}
+          </button>
           <div class="task-details">
             <div class="task-header-row">
               <span class="task-title">${escapeHTML(task.title)}</span>
-              <span class="task-badge ${cat.class}">${cat.icon} ${cat.label}</span>
-              <span title="Tâm trạng">${moodEmoji}</span>
+              <span class="task-badge ${cat.class}">
+                <span class="badge-dot ${cat.dotClass}"></span>
+                ${cat.label}
+              </span>
+              <span class="task-mood-tag">${moodInfo.label}</span>
             </div>
             ${task.notes ? `<div class="task-notes">${escapeHTML(task.notes)}</div>` : ''}
             <div class="task-footer">
-              <span>⏰ ${task.time || 'Cả ngày'}</span>
+              <span class="task-time-pill">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                ${task.time || 'Cả ngày'}
+              </span>
             </div>
           </div>
         </div>
         <div class="task-actions">
-          <button class="task-action-btn" onclick="openEditTaskModal('${task.id}')" title="Chỉnh sửa">✏️</button>
-          <button class="task-action-btn delete" onclick="deleteTaskPrompt('${task.id}')" title="Xóa">🗑️</button>
+          <button class="task-action-btn" onclick="openEditTaskModal('${task.id}')" title="Chỉnh sửa" aria-label="Chỉnh sửa">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
+          </button>
+          <button class="task-action-btn delete" onclick="deleteTaskPrompt('${task.id}')" title="Xóa" aria-label="Xóa">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+          </button>
         </div>
       </div>
     `;
@@ -310,11 +325,9 @@ function renderHeatmap() {
   document.getElementById('total-active-days-val').textContent = activeDays;
   document.getElementById('total-tasks-year-val').textContent = totalYearTasks;
 
-  // Generate 52 weeks (364/365 days)
-  // Find start: 52 weeks ago starting on Monday
+  // Generate 52 weeks (364/365 days) aligned to Monday
   const startDate = new Date(currentYear, 0, 1);
-  // Align to previous Monday if Jan 1 is not Monday
-  const dayOfWeek = startDate.getDay(); // 0 is Sunday, 1 is Monday...
+  const dayOfWeek = startDate.getDay();
   const diffToMonday = (dayOfWeek + 6) % 7;
   startDate.setDate(startDate.getDate() - diffToMonday);
 
@@ -327,7 +340,6 @@ function renderHeatmap() {
     const dateStr = formatDateStr(cur);
     const count = taskCountMap[dateStr] || 0;
     
-    // Intensity level: 0, 1, 2, 3, 4
     let level = 0;
     if (count >= 5) level = 4;
     else if (count >= 3) level = 3;
@@ -372,12 +384,10 @@ function calculateStreaks(taskCountMap, year) {
       currentStreak++;
       check.setDate(check.getDate() - 1);
     } else {
-      // If today has 0 tasks yet, check yesterday
       if (dStr === formatDateStr(today)) {
         check.setDate(check.getDate() - 1);
         const yStr = formatDateStr(check);
         if (taskCountMap[yStr] && taskCountMap[yStr] > 0) {
-          // Continue from yesterday
           continue;
         }
       }
@@ -407,7 +417,7 @@ window.onHeatmapCellClick = function(dateStr) {
   AppState.selectedDate = dateStr;
   switchTab('timeline-tab');
   AppState.refresh();
-  showToast(`📅 Đang xem ngày: ${formatReadableDate(dateStr)}`);
+  showToast(`Đang xem ngày: ${formatReadableDate(dateStr)}`);
 };
 
 // === 5. Analytics & Visual Charts Engine ===
@@ -429,7 +439,7 @@ function renderAnalytics() {
 
   // Aggregate stats
   const catCounts = { work: 0, study: 0, life: 0, health: 0, pet: 0 };
-  const dowCounts = [0, 0, 0, 0, 0, 0, 0]; // 0: CN, 1: T2, 2: T3, ...
+  const dowCounts = [0, 0, 0, 0, 0, 0, 0];
   const monthCounts = new Array(12).fill(0);
   const moodCounts = { happy: 0, proud: 0, peaceful: 0, hardwork: 0, tired: 0 };
 
@@ -461,11 +471,11 @@ function renderAnalytics() {
   const topCatInfo = CATEGORY_MAP[topCatKey];
   const topCatElem = document.getElementById('kpi-top-category');
   if (topCatElem) {
-    topCatElem.textContent = topCatInfo ? `${topCatInfo.icon} ${topCatInfo.label}` : '---';
+    topCatElem.textContent = topCatInfo ? topCatInfo.label : '---';
   }
 
   // Most Productive Day of Week KPI
-  const dowNames = ['Chủ nhật', 'Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6', 'Thứ 7'];
+  const dowNames = ['Chủ nhật', 'Thứ Hai', 'Thứ Ba', 'Thứ Tư', 'Thứ Năm', 'Thứ Sáu', 'Thứ Bảy'];
   let topDowIdx = 1;
   let maxDowCount = 0;
   dowCounts.forEach((cnt, idx) => {
@@ -499,7 +509,7 @@ function renderAnalytics() {
   }
 
   // 3. Render Day of Week Chart (Mon to Sun)
-  const dowOrder = [1, 2, 3, 4, 5, 6, 0]; // Mon -> Sun
+  const dowOrder = [1, 2, 3, 4, 5, 6, 0];
   const maxDow = Math.max(...dowCounts, 1);
   const dowContainer = document.getElementById('dow-bar-chart');
   if (dowContainer) {
@@ -531,12 +541,12 @@ function renderAnalytics() {
     catContainer.innerHTML = Object.entries(catCounts).map(([catKey, count]) => {
       const cat = CATEGORY_MAP[catKey];
       const percent = completedTasks > 0 ? Math.round((count / completedTasks) * 100) : 0;
-      const color = catColors[catKey] || '#e07a5f';
+      const color = catColors[catKey] || '#10b981';
       return `
         <div class="cat-row">
           <div class="cat-row-info">
-            <span>${cat.icon} ${cat.label}</span>
-            <span>${count} việc (${percent}%)</span>
+            <span class="cat-row-name"><span class="badge-dot" style="background:${color};"></span>${cat.label}</span>
+            <span class="cat-row-count">${count} (${percent}%)</span>
           </div>
           <div class="cat-bar-track">
             <div class="cat-bar-fill" style="width: ${percent}%; background: ${color};"></div>
@@ -548,22 +558,20 @@ function renderAnalytics() {
 
   // 5. Render Mood Distribution
   const moodContainer = document.getElementById('mood-breakdown-container');
-  const moodNames = {
-    happy: 'Rất vui',
-    proud: 'Tự hào',
-    peaceful: 'Bình yên',
-    hardwork: 'Chăm chỉ',
-    tired: 'Mệt mỏi'
-  };
   if (moodContainer) {
+    const totalMoods = Object.values(moodCounts).reduce((a, b) => a + b, 0);
     moodContainer.innerHTML = Object.entries(moodCounts).map(([mKey, count]) => {
-      const emoji = MOOD_EMOJIS[mKey] || '😸';
-      const mName = moodNames[mKey] || mKey;
+      const mInfo = MOOD_MAP[mKey] || { label: mKey };
+      const percent = totalMoods > 0 ? Math.round((count / totalMoods) * 100) : 0;
       return `
         <div class="mood-stat-box">
-          <span class="mood-emoji-big">${emoji}</span>
-          <span class="mood-count-text">${count}</span>
-          <span class="mood-title-text">${mName}</span>
+          <div class="mood-box-header">
+            <span class="mood-title-text">${mInfo.label}</span>
+            <span class="mood-count-text">${count} (${percent}%)</span>
+          </div>
+          <div class="mood-bar-track">
+            <div class="mood-bar-fill" style="width: ${percent}%;"></div>
+          </div>
         </div>
       `;
     }).join('');
@@ -578,16 +586,16 @@ window.toggleTaskCompletion = async function(id) {
     await StorageManager.saveTask(task);
     AppState.refresh();
     if (task.completed) {
-      showToast('🐾 Giỏi lắm! Đã hoàn thành 1 việc.');
+      showToast('Đã hoàn thành công việc.');
     }
   }
 };
 
 window.deleteTaskPrompt = async function(id) {
-  if (confirm('Bạn có chắc chắn muốn xóa công việc này không meow?')) {
+  if (confirm('Bạn có chắc chắn muốn xóa bản ghi này không?')) {
     await StorageManager.deleteTask(id);
     AppState.refresh();
-    showToast('🗑️ Đã xóa bản ghi.');
+    showToast('Đã xóa bản ghi.');
   }
 };
 
@@ -595,14 +603,13 @@ window.openEditTaskModal = function(id) {
   const task = AppState.allTasks.find((t) => t.id === id);
   if (!task) return;
 
-  document.getElementById('modal-title').textContent = '✏️ Chỉnh Sửa Việc Đã Làm';
+  document.getElementById('modal-title').textContent = 'Chỉnh sửa công việc';
   document.getElementById('task-edit-id').value = task.id;
   document.getElementById('task-title-input').value = task.title;
   document.getElementById('task-category-select').value = task.category || 'work';
   document.getElementById('task-time-input').value = task.time || '';
   document.getElementById('task-notes-input').value = task.notes || '';
 
-  // Select mood
   AppState.selectedMood = task.mood || 'happy';
   document.querySelectorAll('.mood-btn').forEach((btn) => {
     btn.classList.toggle('selected', btn.dataset.mood === AppState.selectedMood);
@@ -611,13 +618,11 @@ window.openEditTaskModal = function(id) {
   document.getElementById('task-modal').classList.add('active');
 };
 
-// Open Add Modal
 function openAddModal() {
-  document.getElementById('modal-title').textContent = '🐾 Thêm Việc Đã Làm';
+  document.getElementById('modal-title').textContent = 'Thêm công việc';
   document.getElementById('task-edit-id').value = '';
   document.getElementById('task-form').reset();
   
-  // Default to current time
   const now = new Date();
   const timeStr = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
   document.getElementById('task-time-input').value = timeStr;
@@ -634,7 +639,7 @@ function closeTaskModal() {
   document.getElementById('task-modal').classList.remove('active');
 }
 
-// === 6. Backup & Export / Import Management ===
+// === 7. Backup & Export / Import Management ===
 const BackupManager = {
   async exportJSON() {
     const tasks = await StorageManager.getAllTasks();
@@ -652,7 +657,7 @@ const BackupManager = {
     a.download = `MeowMindLog-Backup-${getTodayDateStr()}.json`;
     a.click();
     URL.revokeObjectURL(url);
-    showToast('📥 Xuất tệp JSON sao lưu thành công!');
+    showToast('Đã xuất file sao lưu JSON thành công.');
   },
 
   async importJSON(file) {
@@ -661,11 +666,11 @@ const BackupManager = {
       try {
         const json = JSON.parse(e.target.result);
         if (!json.tasks || !Array.isArray(json.tasks)) {
-          alert('Tệp JSON không đúng cấu trúc của MeowMindLog!');
+          alert('Tệp JSON không đúng định dạng của MeowMindLog.');
           return;
         }
 
-        const isMerge = confirm(`Tệp có ${json.tasks.length} bản ghi.\nBấm OK để GỘP thêm vào dữ liệu hiện tại, hoặc Cancel để GHI ĐÈ toàn bộ.`);
+        const isMerge = confirm(`Tệp có ${json.tasks.length} bản ghi.\nBấm OK để GỘP thêm vào dữ liệu hiện tại, hoặc Hủy để GHI ĐÈ toàn bộ.`);
         if (!isMerge) {
           await StorageManager.clearAll();
         }
@@ -677,9 +682,9 @@ const BackupManager = {
         }
 
         await AppState.refresh();
-        showToast(`📤 Đã nhập thành công ${json.tasks.length} bản ghi!`);
+        showToast(`Đã nhập thành công ${json.tasks.length} bản ghi.`);
       } catch (err) {
-        alert('Lỗi đọc tệp JSON: ' + err.message);
+        alert('Lỗi khi đọc file JSON: ' + err.message);
       }
     };
     reader.readAsText(file);
@@ -688,7 +693,7 @@ const BackupManager = {
   async exportCSV() {
     const tasks = await StorageManager.getAllTasks();
     if (tasks.length === 0) {
-      alert('Chưa có dữ liệu để xuất CSV!');
+      alert('Chưa có dữ liệu để xuất file CSV.');
       return;
     }
     const headers = ['ID', 'Ngày', 'Thời gian', 'Tiêu đề', 'Danh mục', 'Tâm trạng', 'Đã xong', 'Ghi chú'];
@@ -697,8 +702,8 @@ const BackupManager = {
       `"${t.date}"`,
       `"${t.time || ''}"`,
       `"${(t.title || '').replace(/"/g, '""')}"`,
-      `"${t.category || ''}"`,
-      `"${t.mood || ''}"`,
+      `"${CATEGORY_MAP[t.category]?.label || t.category || ''}"`,
+      `"${MOOD_MAP[t.mood]?.label || t.mood || ''}"`,
       `"${t.completed ? 'Có' : 'Không'}"`,
       `"${(t.notes || '').replace(/"/g, '""')}"`
     ]);
@@ -711,16 +716,19 @@ const BackupManager = {
     a.download = `MeowMindLog-Export-${getTodayDateStr()}.csv`;
     a.click();
     URL.revokeObjectURL(url);
-    showToast('📊 Xuất tệp CSV thành công!');
+    showToast('Đã xuất file CSV thành công.');
   }
 };
 
-// === 7. Toast Notifications ===
+// === 8. Toast Notifications ===
 function showToast(message) {
   const container = document.getElementById('toast-container');
   const toast = document.createElement('div');
   toast.className = 'toast';
-  toast.innerHTML = `<span>🐾</span> ${escapeHTML(message)}`;
+  toast.innerHTML = `
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+    <span>${escapeHTML(message)}</span>
+  `;
   container.appendChild(toast);
   setTimeout(() => {
     toast.remove();
@@ -736,7 +744,7 @@ function escapeHTML(str) {
             .replace(/'/g, '&#039;');
 }
 
-// === 8. Tab Navigation ===
+// === 9. Tab Navigation ===
 function switchTab(tabId) {
   AppState.currentTab = tabId;
   document.querySelectorAll('.tab-btn').forEach((btn) => {
@@ -747,19 +755,103 @@ function switchTab(tabId) {
   });
 }
 
-// === 9. Event Listeners Initialization ===
-function initEventListeners() {
-  // Tab clicks
+// === 10. Theme Manager ===
+const ThemeManager = {
+  theme: 'light',
+  init() {
+    const saved = localStorage.getItem('meowmindlog_theme');
+    if (saved) {
+      this.theme = saved;
+    } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      this.theme = 'dark';
+    }
+    this.apply();
+  },
+  toggle() {
+    this.theme = this.theme === 'light' ? 'dark' : 'light';
+    localStorage.setItem('meowmindlog_theme', this.theme);
+    this.apply();
+  },
+  apply() {
+    document.documentElement.setAttribute('data-theme', this.theme);
+    const sunIcon = document.querySelector('.theme-icon-sun');
+    const moonIcon = document.querySelector('.theme-icon-moon');
+    if (sunIcon && moonIcon) {
+      if (this.theme === 'dark') {
+        sunIcon.style.display = 'none';
+        moonIcon.style.display = 'block';
+      } else {
+        sunIcon.style.display = 'block';
+        moonIcon.style.display = 'none';
+      }
+    }
+  }
+};
+
+// === 11. PWA Manager ===
+let deferredPrompt = null;
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  const installBtn = document.getElementById('install-pwa-btn');
+  if (installBtn) installBtn.style.display = 'inline-flex';
+});
+
+// === 12. App Initialization & Event Listeners ===
+document.addEventListener('DOMContentLoaded', async () => {
+  ThemeManager.init();
+  await StorageManager.init();
+  await seedDefaultDataIfEmpty();
+  await AppState.refresh();
+
+  // Tab buttons
   document.querySelectorAll('.tab-btn').forEach((btn) => {
-    btn.addEventListener('click', () => switchTab(btn.dataset.tab));
+    btn.addEventListener('click', () => {
+      switchTab(btn.dataset.tab);
+    });
   });
 
-  // Modal controls
+  // Date navigation
+  document.getElementById('prev-day-btn').addEventListener('click', () => {
+    const [y, m, d] = AppState.selectedDate.split('-').map(Number);
+    const dt = new Date(y, m - 1, d - 1);
+    AppState.selectedDate = formatDateStr(dt);
+    AppState.refresh();
+  });
+
+  document.getElementById('next-day-btn').addEventListener('click', () => {
+    const [y, m, d] = AppState.selectedDate.split('-').map(Number);
+    const dt = new Date(y, m - 1, d + 1);
+    AppState.selectedDate = formatDateStr(dt);
+    AppState.refresh();
+  });
+
+  document.getElementById('today-btn').addEventListener('click', () => {
+    AppState.selectedDate = getTodayDateStr();
+    AppState.refresh();
+  });
+
+  // Category filter
+  document.querySelectorAll('#category-filter-bar .chip').forEach((chip) => {
+    chip.addEventListener('click', () => {
+      document.querySelectorAll('#category-filter-bar .chip').forEach((c) => c.classList.remove('active'));
+      chip.classList.add('active');
+      AppState.selectedCategory = chip.dataset.category;
+      renderTimeline();
+    });
+  });
+
+  // Modal open / close
   document.getElementById('open-add-task-modal-btn').addEventListener('click', openAddModal);
   document.getElementById('close-task-modal-btn').addEventListener('click', closeTaskModal);
   document.getElementById('cancel-task-btn').addEventListener('click', closeTaskModal);
 
-  // Mood selector buttons
+  // Close modal on click backdrop
+  document.getElementById('task-modal').addEventListener('click', (e) => {
+    if (e.target.id === 'task-modal') closeTaskModal();
+  });
+
+  // Mood buttons in modal
   document.querySelectorAll('.mood-btn').forEach((btn) => {
     btn.addEventListener('click', () => {
       document.querySelectorAll('.mood-btn').forEach((b) => b.classList.remove('selected'));
@@ -768,7 +860,7 @@ function initEventListeners() {
     });
   });
 
-  // Task form submit
+  // Task Form Submit
   document.getElementById('task-form').addEventListener('submit', async (e) => {
     e.preventDefault();
     const editId = document.getElementById('task-edit-id').value;
@@ -779,138 +871,86 @@ function initEventListeners() {
 
     if (!title) return;
 
-    const taskObj = {
-      id: editId || 'task-' + Date.now(),
-      title,
-      category,
-      time,
-      notes,
-      mood: AppState.selectedMood,
-      date: AppState.selectedDate,
-      completed: true, // Default to completed since this is a log of done tasks
-      createdAt: editId ? undefined : Date.now()
-    };
-
-    // If editing, preserve completion state & createdAt
     if (editId) {
-      const existing = AppState.allTasks.find((t) => t.id === editId);
-      if (existing) {
-        taskObj.completed = existing.completed;
-        taskObj.createdAt = existing.createdAt;
+      const task = AppState.allTasks.find((t) => t.id === editId);
+      if (task) {
+        task.title = title;
+        task.category = category;
+        task.time = time;
+        task.notes = notes;
+        task.mood = AppState.selectedMood;
+        await StorageManager.saveTask(task);
+        showToast('Đã cập nhật công việc.');
       }
+    } else {
+      const newTask = {
+        id: 'task-' + Date.now() + '-' + Math.random().toString(36).substr(2, 5),
+        title,
+        category,
+        time,
+        notes,
+        mood: AppState.selectedMood,
+        date: AppState.selectedDate,
+        completed: true,
+        createdAt: Date.now()
+      };
+      await StorageManager.saveTask(newTask);
+      showToast('Đã thêm công việc thành công.');
     }
 
-    await StorageManager.saveTask(taskObj);
     closeTaskModal();
     AppState.refresh();
-    showToast(editId ? '✏️ Đã cập nhật công việc!' : '🐾 Đã ghi nhận việc hoàn thành!');
   });
 
-  // Date Navigation
-  document.getElementById('prev-day-btn').addEventListener('click', () => {
-    const cur = new Date(AppState.selectedDate);
-    cur.setDate(cur.getDate() - 1);
-    AppState.selectedDate = formatDateStr(cur);
-    AppState.refresh();
+  // Theme toggle
+  document.getElementById('theme-toggle-btn').addEventListener('click', () => {
+    ThemeManager.toggle();
   });
 
-  document.getElementById('next-day-btn').addEventListener('click', () => {
-    const cur = new Date(AppState.selectedDate);
-    cur.setDate(cur.getDate() + 1);
-    AppState.selectedDate = formatDateStr(cur);
-    AppState.refresh();
-  });
-
-  document.getElementById('today-btn').addEventListener('click', () => {
-    AppState.selectedDate = getTodayDateStr();
-    AppState.refresh();
-  });
-
-  // Category filter chips
-  document.querySelectorAll('#category-filter-bar .chip').forEach((chip) => {
-    chip.addEventListener('click', () => {
-      document.querySelectorAll('#category-filter-bar .chip').forEach((c) => c.classList.remove('active'));
-      chip.classList.add('active');
-      AppState.selectedCategory = chip.dataset.category;
-      renderTimeline();
+  // Install PWA
+  const installBtn = document.getElementById('install-pwa-btn');
+  if (installBtn) {
+    installBtn.addEventListener('click', async () => {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        const { outcome } = await deferredPrompt.userChoice;
+        if (outcome === 'accepted') {
+          installBtn.style.display = 'none';
+        }
+        deferredPrompt = null;
+      }
     });
-  });
-
-  // Theme Toggle (Dark / Light)
-  const themeBtn = document.getElementById('theme-toggle-btn');
-  const savedTheme = localStorage.getItem('meowmindlog_theme');
-  if (savedTheme) {
-    document.documentElement.setAttribute('data-theme', savedTheme);
-    themeBtn.textContent = savedTheme === 'dark' ? '☀️' : '🌙';
   }
 
-  themeBtn.addEventListener('click', () => {
-    const current = document.documentElement.getAttribute('data-theme');
-    const next = current === 'dark' ? 'light' : 'dark';
-    document.documentElement.setAttribute('data-theme', next);
-    localStorage.setItem('meowmindlog_theme', next);
-    themeBtn.textContent = next === 'dark' ? '☀️' : '🌙';
-  });
-
-  // Backup buttons
+  // Backup actions
   document.getElementById('export-json-btn').addEventListener('click', () => BackupManager.exportJSON());
   document.getElementById('export-csv-btn').addEventListener('click', () => BackupManager.exportCSV());
-
-  const fileInput = document.getElementById('import-json-file-input');
-  document.getElementById('trigger-import-json-btn').addEventListener('click', () => fileInput.click());
-  fileInput.addEventListener('change', (e) => {
-    if (e.target.files.length > 0) {
+  document.getElementById('trigger-import-json-btn').addEventListener('click', () => {
+    document.getElementById('import-json-file-input').click();
+  });
+  document.getElementById('import-json-file-input').addEventListener('change', (e) => {
+    if (e.target.files && e.target.files[0]) {
       BackupManager.importJSON(e.target.files[0]);
-      fileInput.value = '';
     }
   });
 
+  // Clear data
   document.getElementById('clear-all-data-btn').addEventListener('click', async () => {
-    if (confirm('CẢNH BÁO: Hành động này sẽ xóa toàn bộ nhật ký của bạn trên máy này!\nBạn có chắc chắn muốn xóa không?')) {
-      await StorageManager.clearAll();
-      AppState.refresh();
-      showToast('🗑️ Đã xóa sạch toàn bộ dữ liệu.');
+    if (confirm('CẢNH BÁO: Bạn có chắc chắn muốn xóa TOÀN BỘ dữ liệu không? Thao tác này sẽ xóa sạch tất cả nhật ký.')) {
+      if (confirm('Xác nhận lần cuối: Bạn có chắc không?')) {
+        await StorageManager.clearAll();
+        await AppState.refresh();
+        showToast('Đã xóa sạch dữ liệu.');
+      }
     }
   });
-}
 
-// === 10. PWA Service Worker Registration & Install Prompt ===
-function initPWA() {
+  // Register Service Worker for 100% Offline Capability
   if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('./sw.js')
-        .then((reg) => console.log('Service Worker registered successfully:', reg.scope))
-        .catch((err) => console.log('Service Worker registration failed:', err));
+    navigator.serviceWorker.register('./sw.js').then((reg) => {
+      console.log('[MeowMindLog] Service Worker registered with scope:', reg.scope);
+    }).catch((err) => {
+      console.error('[MeowMindLog] Service Worker registration failed:', err);
     });
   }
-
-  // Handle Android Install Prompt
-  let deferredPrompt;
-  const installBtn = document.getElementById('install-pwa-btn');
-
-  window.addEventListener('beforeinstallprompt', (e) => {
-    e.preventDefault();
-    deferredPrompt = e;
-    installBtn.style.display = 'flex';
-  });
-
-  installBtn.addEventListener('click', async () => {
-    if (deferredPrompt) {
-      deferredPrompt.prompt();
-      const { outcome } = await deferredPrompt.userChoice;
-      if (outcome === 'accepted') {
-        installBtn.style.display = 'none';
-      }
-      deferredPrompt = null;
-    }
-  });
-}
-
-// === App Entry Point ===
-document.addEventListener('DOMContentLoaded', async () => {
-  await StorageManager.init();
-  await seedDefaultDataIfEmpty();
-  initEventListeners();
-  initPWA();
-  await AppState.refresh();
 });
