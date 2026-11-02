@@ -13,8 +13,11 @@
   <link rel="apple-touch-icon" href="./icons/icon.svg">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
   
-  <link rel="stylesheet" href="./index.css">
+  <link rel="stylesheet" href="./index.css?v=2.0.1">
 </head>
 <body>
   <div class="app-container">
@@ -155,11 +158,11 @@
           </div>
           <div class="heatmap-legend">
             <span>0 việc</span>
-            <div class="legend-box box-0" title="0 việc (Chưa có hoạt động)"></div>
-            <div class="legend-box box-1" title="1 việc (Mức 1)"></div>
-            <div class="legend-box box-2" title="2 việc (Mức 2)"></div>
-            <div class="legend-box box-3" title="3 - 4 việc (Mức 3)"></div>
-            <div class="legend-box box-4" title="5+ việc (Mức 4)"></div>
+            <div class="legend-box box-0" style="background-color: var(--heat-0) !important;" title="0 việc (Chưa có hoạt động)"></div>
+            <div class="legend-box box-1" style="background-color: var(--heat-1) !important;" title="1 việc (Mức 1)"></div>
+            <div class="legend-box box-2" style="background-color: var(--heat-2) !important;" title="2 việc (Mức 2)"></div>
+            <div class="legend-box box-3" style="background-color: var(--heat-3) !important;" title="3 - 4 việc (Mức 3)"></div>
+            <div class="legend-box box-4" style="background-color: var(--heat-4) !important;" title="5+ việc (Mức 4)"></div>
             <span>5+ việc</span>
           </div>
         </div>
@@ -486,6 +489,10 @@
       <form id="task-form">
         <input type="hidden" id="task-edit-id">
         <div class="form-group">
+          <label class="form-label" for="task-date-input">Ngày thực hiện *</label>
+          <input type="date" class="form-input" id="task-date-input" required>
+        </div>
+        <div class="form-group">
           <label class="form-label" for="task-title-input">Tên công việc / hoạt động *</label>
           <input type="text" class="form-input" id="task-title-input" placeholder="Ví dụ: Đọc sách 30 phút, Viết tài liệu dự án..." required>
         </div>
@@ -560,6 +567,6 @@
   <!-- Toast Container -->
   <div class="toast-container" id="toast-container"></div>
 
-  <script src="./app.js"></script>
+  <script src="./app.js?v=2.0.1"></script>
 </body>
 </html>

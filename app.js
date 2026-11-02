@@ -158,6 +158,19 @@ function formatDateStr(date) {
   return `${y}-${m}-${d}`;
 }
 
+// Helper: Normalize Date String to YYYY-MM-DD
+function normalizeDateStr(str) {
+  if (!str) return '';
+  const parts = String(str).trim().split('-');
+  if (parts.length === 3) {
+    const y = parts[0];
+    const m = parts[1].padStart(2, '0');
+    const d = parts[2].padStart(2, '0');
+    return `${y}-${m}-${d}`;
+  }
+  return String(str).trim();
+}
+
 function getTodayDateStr() {
   return formatDateStr(new Date());
 }
@@ -186,6 +199,9 @@ const AppState = {
     renderDailyTrendChart();
     renderHeatmap();
     renderAnalytics();
+    if (this.currentTab === 'heatmap-tab') {
+      setTimeout(scrollHeatmapToToday, 80);
+    }
   }
 };
 
@@ -320,8 +336,9 @@ function renderDailyTrendChart() {
   // Map tasks by date: dateStr -> count
   const taskCountMap = {};
   AppState.allTasks.forEach((t) => {
-    if (t.completed !== false && t.date) {
-      taskCountMap[t.date] = (taskCountMap[t.date] || 0) + 1;
+    if (t.date) {
+      const cleanDate = normalizeDateStr(t.date);
+      taskCountMap[cleanDate] = (taskCountMap[cleanDate] || 0) + 1;
     }
   });
 
@@ -592,8 +609,9 @@ function renderHeatmap() {
   // Map tasks by date: dateStr -> count
   const taskCountMap = {};
   AppState.allTasks.forEach((t) => {
-    if (t.completed !== false && t.date) {
-      taskCountMap[t.date] = (taskCountMap[t.date] || 0) + 1;
+    if (t.date) {
+      const cleanDate = normalizeDateStr(t.date);
+      taskCountMap[cleanDate] = (taskCountMap[cleanDate] || 0) + 1;
     }
   });
 
@@ -643,6 +661,7 @@ function renderHeatmap() {
     const dateStr = formatDateStr(cur);
     const count = taskCountMap[dateStr] || 0;
     const isToday = dateStr === todayStr;
+    const isSelected = dateStr === AppState.selectedDate && !isToday;
     
     let level = 0;
     if (count >= 5) level = 4;
@@ -652,10 +671,12 @@ function renderHeatmap() {
 
     cellsHTML.push(`
       <div 
-        class="heatmap-cell box-${level} ${isToday ? 'is-today' : ''}" 
+        class="heatmap-cell box-${level} ${isToday ? 'is-today' : ''} ${isSelected ? 'is-selected' : ''}" 
         data-date="${dateStr}" 
         data-count="${count}"
-        title="${isToday ? '★ Hôm nay - ' : ''}${formatReadableDate(dateStr)}: ${count} việc hoàn thành"
+        data-level="${level}"
+        style="background-color: var(--heat-${level}) !important;"
+        title="${isToday ? '★ Hôm nay - ' : ''}${formatReadableDate(dateStr)}: ${count} công việc / hoạt động"
         onclick="onHeatmapCellClick('${dateStr}')"
       ></div>
     `);
@@ -667,12 +688,21 @@ function renderHeatmap() {
 // Auto-scroll heatmap to current week
 function scrollHeatmapToToday() {
   const scrollWrapper = document.getElementById('heatmap-scroll-container');
-  const todayCell = document.querySelector('.heatmap-cell.is-today');
-  if (scrollWrapper && todayCell) {
-    const cellLeft = todayCell.offsetLeft || 0;
-    const targetScroll = Math.max(0, cellLeft - (scrollWrapper.clientWidth / 2) + 20);
-    scrollWrapper.scrollTo({ left: targetScroll, behavior: 'smooth' });
-  }
+  if (!scrollWrapper) return;
+
+  const now = new Date();
+  const currentYear = now.getFullYear();
+  const startDate = new Date(currentYear, 0, 1);
+  const dayOfWeek = startDate.getDay();
+  const diffToMonday = (dayOfWeek + 6) % 7;
+  startDate.setDate(startDate.getDate() - diffToMonday);
+
+  const diffTime = now.getTime() - startDate.getTime();
+  const weekIndex = Math.max(0, Math.floor(diffTime / (7 * 24 * 3600 * 1000)));
+
+  const targetPx = weekIndex * 15;
+  const targetScroll = Math.max(0, targetPx - (scrollWrapper.clientWidth / 2) + 20);
+  scrollWrapper.scrollTo({ left: targetScroll, behavior: 'smooth' });
 }
 
 // Calculate Current Streak & Longest Streak
@@ -925,6 +955,9 @@ window.openEditTaskModal = function(id) {
   document.getElementById('task-time-input').value = task.time || '';
   document.getElementById('task-notes-input').value = task.notes || '';
 
+  const dateInput = document.getElementById('task-date-input');
+  if (dateInput) dateInput.value = task.date || AppState.selectedDate;
+
   AppState.selectedMood = task.mood || 'happy';
   document.querySelectorAll('.mood-btn').forEach((btn) => {
     btn.classList.toggle('selected', btn.dataset.mood === AppState.selectedMood);
@@ -941,6 +974,9 @@ function openAddModal() {
   const now = new Date();
   const timeStr = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
   document.getElementById('task-time-input').value = timeStr;
+
+  const dateInput = document.getElementById('task-date-input');
+  if (dateInput) dateInput.value = AppState.selectedDate || getTodayDateStr();
 
   AppState.selectedMood = 'happy';
   document.querySelectorAll('.mood-btn').forEach((btn) => {
@@ -1070,6 +1106,7 @@ function switchTab(tabId) {
   });
   if (tabId === 'heatmap-tab') {
     renderDailyTrendChart();
+    renderHeatmap();
     setTimeout(scrollHeatmapToToday, 80);
   }
 }
@@ -1197,6 +1234,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     const category = document.getElementById('task-category-select').value;
     const time = document.getElementById('task-time-input').value;
     const notes = document.getElementById('task-notes-input').value.trim();
+    const dateInput = document.getElementById('task-date-input');
+    const taskDate = (dateInput && dateInput.value) ? dateInput.value : AppState.selectedDate;
 
     if (!title) return;
 
@@ -1208,6 +1247,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         task.time = time;
         task.notes = notes;
         task.mood = AppState.selectedMood;
+        task.date = taskDate;
         await StorageManager.saveTask(task);
         showToast('Đã cập nhật công việc.');
       }
@@ -1219,7 +1259,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         time,
         notes,
         mood: AppState.selectedMood,
-        date: AppState.selectedDate,
+        date: taskDate,
         completed: true,
         createdAt: Date.now()
       };
@@ -1227,8 +1267,9 @@ document.addEventListener('DOMContentLoaded', async () => {
       showToast('Đã thêm công việc thành công.');
     }
 
+    AppState.selectedDate = taskDate;
     closeTaskModal();
-    AppState.refresh();
+    await AppState.refresh();
   });
 
   // Theme toggle
@@ -1300,6 +1341,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('./sw.js').then((reg) => {
       console.log('[MeowMindLog] Service Worker registered with scope:', reg.scope);
+      reg.update();
     }).catch((err) => {
       console.error('[MeowMindLog] Service Worker registration failed:', err);
     });
